@@ -1,11 +1,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha256-DHF4zGyjT7GOMPBwpeehwoey18z8uiz98G4PRu2lV0A=" crossorigin="anonymous"></script>
 
 <script>
-mainSceneShow();
-buildCarrousel();
-checkPrices();
-completeBook();
-getCovers( iniGen );
+	mainSceneShow();
+	buildCarrousel();
+	checkPrices();
+	completeBook();
+	getCovers( iniGen );
 </script>
 <!-- DEFAULT PREVIEW Start -->
 <script>
@@ -21,29 +21,84 @@ getCovers( iniGen );
 			$(".viewport").append('<div class="modalPage" id="modal-page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid" data-id="<<(materbooks.data.==(language)==[?].id)>>" alt="<<(materbooks.data.==(language)==[?].title)>>"></div>');
 		}
 	}
-/*
-	for(var i=1;i<2;i++){
-//		if (i == 2) continue;
-		$(".pages").append('<div class="singlePage previewPage" id="page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid"><div class="gradient"><svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#40a1f1"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9"begin="0s" dur="0.8s"values="9;15;9" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5"begin="0s" dur="0.8s"values=".5;1;.5" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle></svg></div></div>');
-	}
-
-//	console.log("** All pages added**");
-	$(".previewPage:first").addClass("hard");
-	$(".previewPage:first").next().addClass("hard");
-	$(".previewPage:last").addClass("hard");
-	$(".previewPage:last").prev().addClass("hard");
-*/
 	getNewRequest(1);
-/*
-	if( currentBook().code == undefined || currentBook().code == "" ){
+</script>
+
+/* JS Footer from customization */
+<script>
+	var currentC = currentChar();
+	if ( currentC == false ){
+		var currentCharToCustom = protagonist;
+		var currentCharID = thisBook.characters[currentCharToCustom].id;
+		setLayers();
+		nextChar();
 	}else{
-		var views = Object.keys( currentPreview() ).length;
-		if (views == 0) views = 1;
-		if (views+1 < (amount-2) ){
-			getNewRequest(views);
+		var currentCharToCustom = currentC.position;
+		if( currentCharToCustom == undefined ) currentCharToCustom = protagonist;
+		var currentCharID = thisBook.characters[currentCharToCustom].id;
+		setLayers();
+		$(".charsBreadCurrent"+currentCharToCustom).removeClass("d-none");
+		if( currentC.name != "Materlu" ){
+			$("#character_name").val(currentC.name);
+		}
+		var currentGender = currentC.gender_origin;
+		if( currentGender == undefined ) currentGender = "chica";
+
+		var thisGender = defaultModel[currentGender+currentCharToCustom].gender;
+		currentC.gender = thisGender;
+
+		if( currentGender == "chico" ){
+			setChico();
+			drawModel( defaultModel["chica"+currentCharToCustom] );
+			drawModel( currentC );
+		}else{
+			setChica();
+			drawModel( defaultModel["chico"+currentCharToCustom] );
+			drawModel( currentC );
+		}
+		
+		var url = document.URL.split("#next");
+		if( url.length == 2 && amountChar == 1){
+			endCharacter();
+		}else{
+			//drawModel();
+			if( $("#character_name").val() != "" ){
+				$(".step-1").addClass("hidden");
+				$(".step-2").removeClass("hidden");
+				//drawControls();
+				selectCurrentControls();
+//				$(".customization-dot").removeClass("d-none");
+//				$(".customization-dot-title").addClass("d-none");  
+//				$(".leftOptions").find("button:first").find(".customization-dot").addClass("d-none");
+//				$(".leftOptions").find("button:first").find(".customization-dot-title").removeClass("d-none");   
+			}
 		}
 	}
-*/
+	var currentGenderChar = currentChar().gender;
+	drawSaved();
+	
+	try {
+		for(var i=1;i<amountChar;i++){
+			var pencil = "";
+			var arrow = "d-none";
+			if (i == currentCharToCustom){
+				pencil = "d-none"; 
+				arrow = "";
+			}
+			$(".charsBreadcBox").append(
+				'<a class="d-flex flex-column align-items-center mx-sm-3 mx-1 charsBreadc" data-id="'+i+'"><span class="position-absolute '+pencil+' charsBreadCurrent charsBreadCurrent'
+				+i+'"><i class="fas fa-pencil-alt edit-character edit-first-character"></i></span><img src="==(MAT_cdn2)==img/models/second-character-unknown.png" class="breadcrumb-character" alt="'
+				+thisBook.characters[i].kind+'"><span class="breadcrumb-charactername charName charName'
+				+i+'">'
+				+thisBook.characters[i].kind+'</span><span class="breadcrumb-selected '+arrow+' charsBreadCurrent charsBreadCurrent'
+				+i+'"></span></a>'
+			);
+		}
+	}catch(e){
+		console.log("Error adding breadcrump");
+	}
+	addBreadcrumpChar();
+	selectCurrentControls();
 </script>
 
 <script>
