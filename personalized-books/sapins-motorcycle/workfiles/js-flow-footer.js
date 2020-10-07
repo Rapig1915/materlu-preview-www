@@ -24,7 +24,7 @@
 	getNewRequest(1);
 </script>
 
-/* JS Footer from customization */
+<!-- JS Footer from customization -->
 <script>
 	var currentC = currentChar();
 	if ( currentC == false ){
@@ -185,4 +185,8 @@ this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.le
 		$('.gradient').html("");
 		$(".pages").addClass("pagesLoaded");
 	}
+</script>
+<script>
+	dedication_start();
+	create7LayersIMG();
 </script>

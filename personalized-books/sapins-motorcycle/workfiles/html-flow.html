@@ -664,6 +664,53 @@
         </div>
       </div>
     </div>
+    <section>
+      <div class="container-fluid bg-gradient-light-7 dedicatory-section position-relative px-0 pt-1">
+        <div class="bg-gradient-2 py-2"></div>
+        <div class="bg-img container-fluid px-0">
+          <div class="bg-img2 container-fluid px-0">
+            <div class="container py-md-5 py-3">
+              <form>
+                <h3 class="h2 text-teal mb-3 mx-3">==(MAT_txt_dedicatory)==</h3>
+                <div class="d-flex flex-md-row flex-column">
+                  <div class="col-lg-8 col-md-7">
+                    <div class="form-group">
+                      <label class="h5 text-green mb-2" for="dedicatory">==(MAT_txt_dedicatory_label1)==</label>
+                      <textarea class="form-control" id="dedicatory" rows="10">==(MAT_txt_dedication_helper2)==</textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="d-flex align-items-center justify-content-center my-3 d-none d-mobile">
+                    <a class="btn btn-materlu btn-ideas text-white" href="#" title="Ideas" data-toggle="modal" data-target=".no-ideas"><i class="fas fa-lightbulb pr-3"></i>==(GEN_suggestion)==</a >
+                  </div>
+                  
+                  <div class="col-lg-4 col-md-5">
+                    <p class="h5 text-green mb-2">==(MAT_txt_dedicatory_P4)==</p>
+                    <div class="custom-file">
+                      <label class="custom-file-label" for="upload-photo"><i class="fas fa-camera-retro align-items-center justify-content-center h-100"></i>
+                        <div id="imagePreview" style=""></div>
+                      </label>
+                      <input type="file" class="custom-file-input" id="upload-photo" accept="image/*"> 
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex flex-sm-row flex-column justify-content-between px-3">
+                  <div class="d-flex align-items-center justify-content-center mt-4 d-no-mobile">
+                    <!-- <a class="btn btn-materlu btn-back" href="==(MAT_url_customization)==" ><i class="fas fa-arrow-left pr-3"></i>==(GEN_edit_txt)==</a> -->
+                    <a class="btn btn-materlu btn-ideas text-white" href="#" title="Ideas" data-toggle="modal" data-target=".no-ideas"><i class="fas fa-lightbulb pr-3"></i>==(GEN_suggestion)==</a >
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center mt-4">
+                    <button class="btn btn-materlu nextStep" title="No photo added" data-toggle="modal" data-target=".no-photo">==(MAT_txt_dedicatory_btn)==</button> 
+                    <a class="btn btn-materlu _nextStep" href="==(MAT_url_preview)==" style="display: none;">==(MAT_txt_dedicatory_btn)==</a>									
+                  </div>                                      
+                </div>
+                        
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <div class="other-books-container container-fluid d-flex flex-column bg-blue py-5 px-0">
       <h3 class="text-light text-center py-3">==(MAT_txt-other-stories)==</h3>
       <div class="row mx-lg-5 mx-sm-4 mx-0 on-top carouselOurBooks">
@@ -730,6 +777,70 @@
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade no-photo" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" id="dialog">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-gradient-light-5 border-blue">
+    <div class="modal-header bg-gradient-2 border-cyan">
+      <h5 class="modal-title text-center text-white d-flex justify-content-center w-100 ml-3">==(MAT_txt_dedicatory_modal_title)==</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true" class="text-primary">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body d-flex align-items-center">
+      <p class="text-center">==(MAT_txt_dedicatory_modal)== <br> ==(MAT_txt_dedicatory_modal_br)==</p>
+    </div>
+    <div class="modal-footer border-cyan">
+      <a class="btn btn-primary" href="==(MAT_url_preview)==">==(GEN_continue_txt)==</a>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">==(GEN_edit_txt)==</button>
+    </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade no-ideas" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" id="ideas">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-gradient-light-5 border-blue">
+      <div class="modal-header bg-gradient-2 border-cyan">
+          <h5 class="modal-title text-center text-white d-flex justify-content-center w-100 ml-3">==(MAT_txt_dedication_helper_title)==</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" class="text-primary">&times;</span>
+          </button>
+      </div>
+      <div class="modal-body d-flex flex-column align-items-center py-0 px-0">
+        <div class="idea-text d-flex flex-column align-items-end px-3 py-3">
+            <p id="idea1" class="text-left mb-0">==(MAT_txt_dedication_helper1)==</p>
+            <button class="copy-text-btn useIdea" data-target="idea1" data-dismiss="modal"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="idea-text d-flex flex-column align-items-end px-3 py-3">
+            <p id="idea2" class="text-left mb-0">==(MAT_txt_dedication_helper2)==</p>
+            <button class="copy-text-btn useIdea" data-target="idea2" data-dismiss="modal"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="idea-text d-flex flex-column align-items-end px-3 py-3">
+            <p id="idea3" class="text-left mb-0">==(MAT_txt_dedication_helper3)==</p>
+            <button class="copy-text-btn useIdea" data-target="idea3" data-dismiss="modal"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="idea-text d-flex flex-column align-items-end px-3 py-3">
+            <p id="idea4" class="text-left mb-0">==(MAT_txt_dedication_helper4)==</p>
+            <button class="copy-text-btn useIdea" data-target="idea4" data-dismiss="modal"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="idea-text d-flex flex-column align-items-end px-3 py-3">
+            <p id="idea5" class="text-left mb-0">==(MAT_txt_dedication_helper5)==</p>
+            <button class="copy-text-btn useIdea" data-target="idea5" data-dismiss="modal"><i class="fas fa-copy"></i></button>
+        </div>
+        <div class="idea-text d-flex flex-column align-items-end px-3 py-3">
+            <p id="idea6" class="text-left mb-0">==(MAT_txt_dedication_helper6)==</p>
+            <button class="copy-text-btn useIdea" data-target="idea6" data-dismiss="modal"><i class="fas fa-copy"></i></button>
+        </div>
+        <!-- <div class="idea-text d-flex flex-column align-items-end border-0 px-3 py-3"> -->
+            <!-- <p id="idea7" class="text-left mb-0">==(MAT_txt_dedication_helper7)==</p> -->
+            <!-- <button class="copy-text-btn useIdea" data-target="idea7"><i class="fas fa-copy"></i></button> -->
+        <!-- </div> -->
+    </div>
+    <div class="modal-footer border-cyan">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">==(GEN_continue_txt)==</button>
+    </div>
     </div>
   </div>
 </div>
