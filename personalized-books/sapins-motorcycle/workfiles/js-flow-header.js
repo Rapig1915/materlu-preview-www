@@ -637,8 +637,8 @@ function ResizeImage() {
 </script>
 
 <script>
-function resetPreview(){
-	console.log("RESETPREVIEW");
+function resetBook(){
+	console.log("RESETBOOK");
 	setcurrentPreview();
 	$(".pages").turn("destroy");
 	$(".pages").removeClass("pagesLoaded");

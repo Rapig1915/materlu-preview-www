@@ -13348,10 +13348,10 @@ function encodeMyJSON(json){
 {
 	"@context" : "https://schema.org",
 	"@type" : "Product",
-	"name" : "El Botón de la Navidad",
-	"image" : "",
-	"description" : "El botón de la Navidad.",
-	"url" : "https://materlu.com/en/personalized-books/el-boton-de-la-navidad",
+	"name" : "The secret broom",
+	"image" : "https://admin.materlu.com/api/get-book-cover/9",
+	"description" : "For the child is really important to know how to express their emotions and how to take control of them. Thanks to the friendly troll that our little protagonist will meet, we will learn with him the best way to express our feelings and how it affects the way we do it to other people. Our little one will learn how to tell what he feels and that if he does it in the proper way, people will be able to understand perfectly what is happening to him. This story will awake emotions to both of you and you will enjoy reading it together!",
+	"url" : "https://materlu.com/en/personalized-books/the-secret-broom",
 	"brand" : {
 		"@type" : "Brand",
 		"name" : "Materlu",
@@ -13360,7 +13360,7 @@ function encodeMyJSON(json){
 	"offers" : {
 		"@type" : "Offer",
 		"availability": "http://schema.org/InStock",
-		"price" : "36.00",
+		"price" : "38.00",
 		"priceCurrency" : "EUR"
 	}
 }
@@ -13982,8 +13982,8 @@ function ResizeImage() {
 </script>
 
 <script>
-function resetBook(){
-	console.log("RESETBOOK");
+function resetPreview(){
+	console.log("RESETPREVIEW");
 	setcurrentPreview();
 	$(".pages").turn("destroy");
 	$(".pages").removeClass("pagesLoaded");
@@ -14066,8 +14066,8 @@ function addToCart(){
 	curB.dedication = parseDedication( curB.dedication );
 	curB.res = {
 		//		"cover": $("#page1").find("img").attr("src"),
-		"title": "El Botón de la Navidad",
-		"price": "36",
+		"title": "The secret broom",
+		"price": "38",
 		"currency": "EUR",
 		"symbol": "€",
 		"characters": []
@@ -14087,7 +14087,7 @@ function addToCart(){
 		
 		// Pinterest Pixel:
 		pintrk('track', 'addtocart', {
-			value: 36,
+			value: 38,
 			order_quantity: 1,
 			currency: 'EUR'
 		});
@@ -14103,7 +14103,7 @@ function addToCart(){
 </script>
 
 <script>
-var currentB = 12;
+var currentB = 9;
 var defaultModel = defaultModel['b'+currentB];
 var character_txt = ' Character';
 var characters_txt = ' Characters';
@@ -14313,7 +14313,7 @@ var imgData = ""
               <div class="d-flex flex-column">
                 <div class="d-flex flex-column align-items-center justify-content-center position-relative">
                   <div class="pages shadow mt-3">
-                    <div class="singlePage previewPage hard" id="page1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="12" alt="El Botón de la Navidad"></div>
+                    <div class="singlePage previewPage hard" id="page1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="9" alt="The secret broom"></div>
                   </div>
                   <div class="turn-page-help d-flex flex-row align-self-end">
                     <p class="text-center text-dark">Pull corners to turn the page</p>
@@ -14342,15 +14342,15 @@ var imgData = ""
                         <p class="h5 mb-0">Digital version</p>
                       </div>
                     </div>
-                    <h1 class="card-title">El Botón de la Navidad</h1>
-                    <div class="d-flex flex-row card-text price checkPrice" data-id="12">
+                    <h1 class="card-title">The secret broom</h1>
+                    <div class="d-flex flex-row card-text price checkPrice" data-id="9">
                       <div class="discount-badge onlyDiscount">
                         <span></span>
                         <i class="fas fa-certificate text-purple"></i>
                       </div>
                       <div class="d-flex flex-row align-items-baseline">
                         <p class="previous-price pr-1 mb-0 realPrice"><del>€</del></p>
-                        <p class="h5 mb-0">36€</p>
+                        <p class="h5 mb-0">38€</p>
                       </div>
                     </div>
                   </div>
@@ -14394,7 +14394,7 @@ var imgData = ""
               <div>
                 <div class="line-breadcrumb"></div>
                 <div class="story-name bg-gradient-green">
-                  <h1 class="h4 m-0">El Botón de la Navidad</h1>
+                  <h1 class="h4 m-0">The secret broom</h1>
                 </div>
                 <div class="d-flex flex-row col-6 offset-6 justify-content-end px-0 mt-2 charsBreadcBox">
                   <a class="d-flex flex-column align-items-center mx-sm-3 mx-1 charsBreadc" data-id="0">
@@ -15015,7 +15015,7 @@ var imgData = ""
       <div class="bg-img">
           <div class="d-flex flex-md-row flex-column-reverse justify-content-md-between bg-gradient-2 title">
               <div class="d-flex align-items-center justify-content-center">
-                  <h1 class="h4 text-center text-white my-3 ml-xl-5 ml-lg-3 mx-3">Preview of: <span> El Botón de la Navidad </span></h1>
+                  <h1 class="h4 text-center text-white my-3 ml-xl-5 ml-lg-3 mx-3">Preview of: <span> The secret broom </span></h1>
               </div>
               <div class="d-flex flex-sm-row flex-column justify-content-center align-items-center">
                   <div class="mt-sm-3 mt-2 mx-3">
@@ -15199,7 +15199,7 @@ var imgData = ""
           </div>
           <div class="d-flex p-3 LmodalPages">
             <div class="modalPage" id="modal-page1">
-              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="12" alt="El Botón de la Navidad">
+              <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="9" alt="The secret broom">
             </div>
           </div>
         </div>
@@ -15276,7 +15276,7 @@ var imgData = ""
 		<div class="d-flex flex-lg-row flex-column">
                             <div class="col-lg-5 d-flex flex-sm-row flex-column align-items-center justify-content-center justify-content-xl-between px-0">
                                 <div class="d-flex justify-content-sm-start justify-content-center py-sm-0 py-2 py-xl-0">
-                                <div class="h6 text-center text-light mb-0 mx-3" title="v.20201008141541">&copy; 2020 Materlu</div> 
+                                <div class="h6 text-center text-light mb-0 mx-3" title="v.20201008001604">&copy; 2020 Materlu</div> 
                                 </div>
                                 <div class="d-flex justify-content-sm-end justify-content-center py-xl-0 py-2">
 									<a class="fa-stack mx-lg-3 mx-2" href="https://www.youtube.com/channel/UCKCsaUnaKI6VTt21PQl9qLw" target="_blank">
@@ -15724,7 +15724,7 @@ window.onscroll = function() {
 		$("#page1").attr("data-toggle","modal");
 		$("#page1").attr("data-target","#lightBox");		
 		for(var i=3;i<amount;i++){
-			$(".viewport").append('<div class="modalPage" id="modal-page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid" data-id="12" alt="El Botón de la Navidad"></div>');
+			$(".viewport").append('<div class="modalPage" id="modal-page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid" data-id="9" alt="The secret broom"></div>');
 		}
 	}
 

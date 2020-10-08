@@ -1,0 +1,1 @@
+xcopy "F:\xampp\htdocs\panelwebcreator\public\storage\templates\admin~127001~2020~materlucom\en\*.*" "F:\xampp\htdocs\materlu_www\" /E /K /D /H /Y
