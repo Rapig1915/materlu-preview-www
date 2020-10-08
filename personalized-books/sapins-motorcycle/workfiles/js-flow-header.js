@@ -112,8 +112,8 @@ function mainSceneShow(){
 	var pointer = ""; 
 	if( currentChar() != false) pointer = "#next";
 	
-	let href = '/==(language)==/==(MAT_url_custom-stories)==/'+books['b'+currentB].seo_url+'/'+destiny+pointer;
-	$('#main-btn-materlu').attr('href', href);
+	// let href = '/==(language)==/==(MAT_url_custom-stories)==/'+books['b'+currentB].seo_url+'/'+destiny+pointer;
+	// $('#main-btn-materlu').attr('href', href);
 }
 /* << end of main scene*/
 
@@ -171,10 +171,14 @@ function setcurrentPreview(preview){
 	}
 	return true;
 }
-function loadPage(pagefrom,pageto,next=0,forced=0){
+function loadPage(token, pagefrom,pageto,next=0,forced=0,sample=0){
 	//console.log("** LOADPAGE: " + pagefrom+","+pageto+","+next+","+forced);
 	if( currentBook().code == undefined){
-		console.log("REQUEST CANCELED");
+		console.log("REQUEST CANCELED: No CODE");
+		return false;
+	}
+	if(previewToken !== token){
+		console.log(`REQUEST CANCELED: TOKEN is OLD (${token}) current is ${previewToken}`);
 		return false;
 	}
 	if( true || currentBook().code === lastRequest || !lastRequest ){
@@ -193,19 +197,19 @@ function loadPage(pagefrom,pageto,next=0,forced=0){
 				"preview": 1
 			},
 			success: function(res){
-				console.log("LOADED: "+pagefrom+"-"+pageto);
+				console.log(`LOADED [${token}]: ${pagefrom}-${pageto}`);
 				var currentP = currentPreview();
 				for(var i=0;i<res.pages.length;i++){
 					var ind = pagefrom+i;
 					currentP["page"+ind] = res.pages[i];
 					if( ind < amount ){
 						if( ind > 2 ) ind = ind-1;
-						addPages(ind,res.pages[i]);
+						addPages(ind,res.pages[i],sample);
 					}
 				}
 				setcurrentPreview(currentP);
 				if(next>0){
-					loadPage(pageto+1, pageto+next+1, next);
+					loadPage(token, pageto+1, pageto+next+1, next,0,sample);
 				}
 			},
 			error: function(error){
@@ -217,27 +221,34 @@ function loadPage(pagefrom,pageto,next=0,forced=0){
 		console.log("REQUEST CANCELED");
 	}
 }
-function checkPages(page=0){
+function checkPages(page=0, sample=0){
 	var currentP = currentPreview();
 	var index = page;
 	if(page > 1) index = page + 1;
 	//console.log("** CHECKPAGES: " + page +","+index);
 	//console.log(currentP['page'+index]);
-	$(".pages").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
+	if(sample)
+	  $(".pages-top").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
+    else
+	  $(".pages-preview").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
 }
-function addPages(page,file){
+function addPages(page,file,sample=0){
 	var index = page;
 	if(page > 1) index = page + 1;
 	if( isMobile.any() == null ){
-		$(".pages").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
+		if(sample)
+	      $(".pages-top").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
+	    else
+	      $(".pages-preview").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
+	
 	}else{
 		$("#modal-page"+page).find("img").attr("src",'https://admin.materlu.com'+file);
 	}
 }
-function getNewRequest(start=0,restart=0){
-	console.log("** GETNEWREQUEST: " + start);
+function getNewRequest(start=0,restart=0,sample=0){
+  	console.log(`** GETNEWREQUEST: ${start} with TOKEN: ${++previewToken}, sample: ${sample}`);
 	var result = "";
-	//var curB = currentBook();
+	var curB = currentBook();
 	for(var i=0;i<curB.characters.length;i++){
 		delete curB.characters[i].src;
 	}
@@ -248,7 +259,7 @@ function getNewRequest(start=0,restart=0){
 		"storyId": curB.storyId,
 		"language": curB.language,
 		"font_style": curB.font_style,
-		"characters": curB.characters,
+		"characters": (typeof curB.characters === 'string') ? curB.characters : JSON.stringify(curB.characters),
 		"dedication": curB.dedication,
 		"photo": curB.photo
 	};
@@ -269,9 +280,9 @@ function getNewRequest(start=0,restart=0){
 			var result = addTocurrentBook( { "code": res.code } );
 			if( start == 1 ){
 				//loadPage(1,1,0,0);
-				loadPage(3,3+blockPages,blockPages,0);
+				loadPage(previewToken, 3,3+blockPages,blockPages,0,sample);
 			}else if( start > 1 ){
-				loadPage(start,start,blockPages,0);
+				loadPage(previewToken, start,start,blockPages,0,sample);
 			}
 			if( restart == 1 ){
 				setTimeout(function(){ window.location.reload(); }, 1200);
@@ -333,7 +344,7 @@ function drawModel( model=currentChar() ){
 				$("."+thisGender+"-wrapper").find("[data-layer='"+index+"']").children("img").attr("src","https://admin.materlu.com/books/"+currentB+"/layer_json/"+currentCharID+"/"+thisGender+"/o_"+value.show+color+".png");
 			}
 		});
-		model.src = "https://admin.materlu.com/api/avatar?storyId="+currentB+"&characterNo="+(currentCharToCustom+1)+"&param="+window.btoa(JSON.stringify( model ));
+		model.src = "https://admin.materlu.com/api/avatar?storyId="+currentB+"&characterNo="+(parseInt(currentCharToCustom)+1)+"&param="+window.btoa(JSON.stringify( model ));
 		newChar( model );
 	}
 	$(".previewChars").addClass("showChars");
@@ -362,10 +373,12 @@ function endCharacter(){
 		let curBk = currentBook();
 		curBk.characters.splice(amountChar, 1);
 		addTocurrentBook(curBk);
-		window.location.assign("==(MAT_url_dedicatory)==");
+		// window.location.assign("==(MAT_url_dedicatory)==");
+		resetBook();
 	}
 	else if( amountChar == currentBook().characters.length ){
-		window.location.assign("==(MAT_url_dedicatory)==");
+		// window.location.assign("==(MAT_url_dedicatory)==");
+		resetBook();
 	}else{
 		currentCharToCustom++;			
 		currentCharID = thisBook.characters[currentCharToCustom].id;
@@ -379,7 +392,7 @@ function addBreadcrumpChar(){
 	let cCharacters = currentBook().characters;
 	if(cCharacters == undefined) return false;
 	cCharacters.forEach(function(cObj, key){
-		var src = "https://admin.materlu.com/api/avatar?storyId="+currentB+"&characterNo="+(key+1)+"&param="+window.btoa(JSON.stringify( cObj ));
+		var src = "https://admin.materlu.com/api/avatar?storyId="+currentB+"&characterNo="+(parseInt(key)+1)+"&param="+window.btoa(JSON.stringify( cObj ));
 		$('.charsBreadCurrent'+key).next().prop('src', src);
 		$(".charName"+key).text(cObj.name[1]);
 	})
@@ -627,10 +640,10 @@ function ResizeImage() {
 			return;
 		}
 		
-		var dedicatoryObj = {"language":lang }
-		if( imgData != undefined ) dedicatoryObj.photo = imgData;
-		var result = addTocurrentBook( dedicatoryObj );
-		getNewRequest(0);
+		// var dedicatoryObj = {"language":lang }
+		// if( imgData != undefined ) dedicatoryObj.photo = imgData;
+		// var result = addTocurrentBook( dedicatoryObj );
+		// getNewRequest(0);
 	}
 	reader.readAsDataURL(file);
 }
@@ -640,12 +653,12 @@ function ResizeImage() {
 function resetBook(){
 	console.log("RESETBOOK");
 	setcurrentPreview();
-	$(".pages").turn("destroy");
-	$(".pages").removeClass("pagesLoaded");
-	$(".page").remove();
+	$("#flip-pages-preview").turn("destroy");
+	$(".pages-preview").removeClass("pagesLoaded");
+	$(".pages-preview .page").remove();
 	for(var i=1;i<(amount-1);i++){
 		if(i==2) continue;
-		$(".pages").append('<div class="singlePage previewPage" id="page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO82g4AAjcBXq8Qp6oAAAAASUVORK5CYII=" class="img-fluid"><div class="gradient"><svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#40a1f1"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9"begin="0s" dur="0.8s"values="9;15;9" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5"begin="0s" dur="0.8s"values=".5;1;.5" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle></svg></div></div>');
+		$(".pages-preview").append('<div class="singlePage previewPage" id="page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO82g4AAjcBXq8Qp6oAAAAASUVORK5CYII=" class="img-fluid"><div class="gradient"><svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#40a1f1"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9"begin="0s" dur="0.8s"values="9;15;9" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5"begin="0s" dur="0.8s"values=".5;1;.5" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle></svg></div></div>');
 	}
 	$(".previewPage:first").addClass("hard");
 	$(".previewPage:first").next().addClass("hard");
@@ -654,7 +667,7 @@ function resetBook(){
 	
 	getNewRequest(1);
 	
-	$('.pages').turn({
+	$('#flip-pages-preview').turn({
 		duration: 1500,
 		acceleration: true,
 		autoCenter: true,
@@ -663,9 +676,9 @@ function resetBook(){
 		elevation: 300
 	});
 	
-	$(".opa").removeClass("opa");
-	$('.gradient').html("");
-	$(".pages").addClass("pagesLoaded");
+	$(".pages-preview .opa").removeClass("opa");
+	$('.pages-preview .gradient').html("");
+  	$(".pages-preview").addClass("pagesLoaded");
 	
 }
 function preview_start(){
@@ -693,13 +706,15 @@ var pagesShown = 0;
 function resizeFrame(){
 	var w = $('#main').width();
 	if(w<=575.98){
-		$('.pages').turn('size', '300', '150');
+    	$('#flip-pages-preview').turn('size', '300', '150');
+    	// $('#flip-pages-top').turn('size', '300', '150');
 		if( pagesShown == 0 ){
 			$('#modal-phone-alert').modal('show');
 			pagesShown = 1;
 		}
 	}else{
-		$('.pages').turn('size', '', '');
+    	// $('#flip-pages-top').turn('size', '', '');
+    	$('#flip-pages-preview').turn('size', '', '');
 		$('#modal-phone-alert').modal('hide');   
 	}
 }
@@ -768,7 +783,7 @@ var defaultGen = gen[rnd];
 var iniGen = defaultGen;
 var defaultSrc = "==(MAT_cdn2)==default/"+currentB+"_0_"+defaultGen+".png";
 var thebook = books['b'+currentB];
-var blockPages = 3;
+var blockPages = 6;
 var shown = 0;
 
 var currentPage = 1;
@@ -822,5 +837,6 @@ $.each( thisBook.characters, function( index, value ){
 var version = 'Ant.ChkLater.v13:20';
 var lastRequest = "";
 var defaultDedication = "==(MAT_txt_dedication_helper2)==";
-var imgData = ""
+var imgData = "";
+var previewToken = 0;
 </script>

@@ -12,7 +12,7 @@
               <div class="container h5 text-teal mb-2 text-center">==(MAT_check_out_this_sample)==</div>
               <div class="d-flex flex-column">
                 <div class="d-flex flex-column align-items-center justify-content-center position-relative">
-                  <div class="pages shadow mt-3">
+                  <div id="flip-pages-top" class="pages-top pages shadow mt-3">
                     <div class="singlePage previewPage hard" id="page1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="<<(materbooks.data.==(language)==[?].id)>>" alt="<<(materbooks.data.==(language)==[?].title)>>"></div>
                   </div>
                   <div class="turn-page-help d-flex flex-row align-self-end">
@@ -23,7 +23,7 @@
               </div> 
               <div class="container h5 text-teal mb-2 text-center">==(MAT_did_you_enjoy_the_book)==</div>
               <div class="flex">
-                <a href="==(MAT_url_customization)==" class="btn btn-materlu mt-1" id="main-btn-materlu">==(MAT_complete_customization)==</a>
+                <a href="#container_personalization" class="btn btn-materlu mt-1" id="main-btn-materlu">==(MAT_start_personalization)==</a>
               </div>
               <div class="story-monster2">
                 <iframe src="==(MAT_cdn)==img/monsters/anim003/index.html" class="headerMonsteriframe"></iframe>
@@ -77,7 +77,7 @@
                         <!-- liTXT -->
                       </ul>
                     </div>
-                    <a href="==(MAT_url_customization)==" class="btn btn-materlu mt-1" id="main-btn-materlu">==(MAT_complete_customization)==</a>
+                    <a href="#container_personalization" class="btn btn-materlu mt-1" id="main-btn-materlu">==(MAT_start_personalization)==</a>
                   </div>
                 </div>
               </div>
@@ -86,7 +86,7 @@
         </div>
       </div>
     </div>
-    <div class="bg-story container-fluid height-custom px-0">
+    <div id="container_personalization" class="bg-story container-fluid height-custom px-0">
       <div class="bg-gradient-translucid height-custom">
         <div class="container position-relative flex-column">
           <form action="" method="post" id="create_story_customized_form">
@@ -664,7 +664,7 @@
         </div>
       </div>
     </div>
-    <section>
+    <section id="container_dedication">
       <div class="container-fluid bg-gradient-light-7 dedicatory-section position-relative px-0 pt-1">
         <div class="bg-gradient-2 py-2"></div>
         <div class="bg-img container-fluid px-0">
@@ -700,8 +700,8 @@
                     <a class="btn btn-materlu btn-ideas text-white" href="#" title="Ideas" data-toggle="modal" data-target=".no-ideas"><i class="fas fa-lightbulb pr-3"></i>==(GEN_suggestion)==</a >
                   </div>
                   <div class="d-flex align-items-center justify-content-center mt-4">
-                    <button class="btn btn-materlu nextStep" title="No photo added" data-toggle="modal" data-target=".no-photo">==(MAT_txt_dedicatory_btn)==</button> 
-                    <a class="btn btn-materlu _nextStep" href="==(MAT_url_preview)==" style="display: none;">==(MAT_txt_dedicatory_btn)==</a>									
+                    <button class="btn btn-materlu nextStep" title="No photo added" data-toggle="modal" data-target=".no-photo">==(MAT_txt_save_and_preview)==</button> 
+                    <button class="btn btn-materlu _nextStep" style="display: none;">==(MAT_txt_save_and_preview)==</button> 
                   </div>                                      
                 </div>
                         
@@ -711,7 +711,7 @@
         </div>
       </div>
     </section>
-    <div class="main-wrapper container-fluid bg-gradient-light-3 px-0"> 
+    <div id="container_preview" class="main-wrapper container-fluid bg-gradient-light-3 px-0"> 
       <div class="bg-img">
           <div class="d-flex flex-md-row flex-column-reverse justify-content-md-between bg-gradient-2 title">
               <div class="d-flex align-items-center justify-content-center">
@@ -814,7 +814,9 @@
           <div class="main-container container d-flex justify-content-center align-items-center">
               <div class="d-flex flex-column">
                   <div class="d-flex flex-column align-items-center justify-content-center position-relative">
-                      <div class="pages shadow mt-3"></div>
+                      <div id="flip-pages-preview" class="pages-preview pages shadow mt-3">
+                        <div class="singlePage previewPage hard" id="page1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="<<(materbooks.data.==(language)==[?].id)>>" alt="<<(materbooks.data.==(language)==[?].title)>>"></div>
+                      </div>
                       <div class="turn-page-help d-flex flex-row align-self-end">
                           <p class="text-center text-white">==(MAT_txt_preview_p1)==</p>
                           <svg viewBox="0 0 47.6 74.2">
@@ -831,7 +833,7 @@
                       </div>             
                   </div>
                   <div class="d-flex flex-sm-row flex-column align-items-center justify-content-center">
-                      <a class="btn btn-secondary btn-back mt-3 mb-sm-3 mx-3" href="==(MAT_url_dedicatory)=="><i class="fas fa-arrow-left pr-3"></i>==(MAT_txt_preview_a1)==</a>                        
+                      <!-- <a class="btn btn-secondary btn-back mt-3 mb-sm-3 mx-3" href="==(MAT_url_dedicatory)=="><i class="fas fa-arrow-left pr-3"></i>==(MAT_txt_preview_a1)==</a>                         -->
                       <button class="btn btn-materlu my-3 mx-3 addToCart"><i class="fas fa-shopping-cart fa-sm pr-3"></i>==(MAT_txt_preview_a2)==</button>
                   </div>
               </div>           
@@ -920,7 +922,8 @@
       <p class="text-center">==(MAT_txt_dedicatory_modal)== <br> ==(MAT_txt_dedicatory_modal_br)==</p>
     </div>
     <div class="modal-footer border-cyan">
-      <a class="btn btn-primary" href="==(MAT_url_preview)==">==(GEN_continue_txt)==</a>
+      <!-- <a class="btn btn-primary" href="==(MAT_url_preview)==">==(GEN_continue_txt)==</a> -->
+      <button type="button" class="btn btn-secondary _nextStep" data-dismiss="modal">==(GEN_continue_txt)==</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">==(GEN_edit_txt)==</button>
     </div>
     </div>

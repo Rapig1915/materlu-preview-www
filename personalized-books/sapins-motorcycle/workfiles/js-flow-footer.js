@@ -7,28 +7,6 @@
 	completeBook();
 	getCovers( iniGen );
 </script>
-<!-- DEFAULT PREVIEW Start -->
-<script>
-	var currentP = currentPreview();
-	if( isMobile.any() ) {
-		$(".pages").addClass("mb-4");
-		$(".pages").addClass("LBmodal");
-		$(".pages").removeClass("pages");
-		$(".turn-page-help").remove();
-		$("#page1").attr("data-toggle","modal");
-		$("#page1").attr("data-target","#lightBox");		
-		for(var i=3;i<amount;i++){
-			$(".viewport").append('<div class="modalPage" id="modal-page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid" data-id="<<(materbooks.data.==(language)==[?].id)>>" alt="<<(materbooks.data.==(language)==[?].title)>>"></div>');
-		}
-	}
-
-	$(".previewPage:first").addClass("hard");
-	$(".previewPage:first").next().addClass("hard");
-	$(".previewPage:last").addClass("hard");
-	$(".previewPage:last").prev().addClass("hard");
-
-	getNewRequest(1);
-</script>
 
 <!-- JS Footer from customization -->
 <script>
@@ -178,22 +156,49 @@ this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.le
 </script>
 <script defer>
 	if( isMobile.any() == null ){
-		$('.pages').turn({
-			pages: amount-2,
-			duration: 1500,
-			acceleration: true,
-			autoCenter: true,
-			gradients: true,
-			turnCorners: "bl,br",
-			elevation: 300
-		});
-		$(".opa").removeClass("opa");
-		$('.gradient').html("");
-		$(".pages").addClass("pagesLoaded");
-	}
+		// $('#flip-pages-top').turn({
+		// 	pages: amount-2,
+		// 	duration: 1500,
+		// 	acceleration: true,
+		// 	autoCenter: true,
+		// 	gradients: true,
+		// 	turnCorners: "bl,br",
+		// 	elevation: 300
+		// });
+		// $(".pages-top .opa").removeClass("opa");
+		// $('.pages-top .gradient').html("");
+    // $(".pages-top").addClass("pagesLoaded");
+    
+    $('#flip-pages-preview').turn({
+      duration: 1500,
+      acceleration: true,
+      autoCenter: true,
+      gradients: true,
+      turnCorners: "bl,br",
+      elevation: 300
+    });
+    
+    $(".pages-preview .opa").removeClass("opa");
+    $('.pages-preview .gradient').html("");
+    $(".pages-preview").addClass("pagesLoaded");
+	}else{
+    $(".pages").addClass("mb-4");
+		$(".pages").addClass("LBmodal");
+    $(".pages").removeClass("pages");
+		$(".turn-page-help").remove();
+		$("#page1").attr("data-toggle","modal");
+		$("#page1").attr("data-target","#lightBox");		
+		for(var i=3;i<amount;i++){
+			$(".viewport").append('<div class="modalPage" id="modal-page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid" data-id="9" alt="The secret broom"></div>');
+		}
+  }
 </script>
 <script>
 	dedication_start();
 	preview_start();
 	create7LayersIMG();
+// Start sample book
+	// getNewRequest(1, 0, 1);
+// Start preview book
+  	resetBook();
 </script>

@@ -13457,8 +13457,8 @@ function mainSceneShow(){
 	var pointer = ""; 
 	if( currentChar() != false) pointer = "#next";
 	
-	let href = '/en/personalized-books/'+books['b'+currentB].seo_url+'/'+destiny+pointer;
-	$('#main-btn-materlu').attr('href', href);
+	// let href = '/en/personalized-books/'+books['b'+currentB].seo_url+'/'+destiny+pointer;
+	// $('#main-btn-materlu').attr('href', href);
 }
 /* << end of main scene*/
 
@@ -13516,10 +13516,14 @@ function setcurrentPreview(preview){
 	}
 	return true;
 }
-function loadPage(pagefrom,pageto,next=0,forced=0){
+function loadPage(token, pagefrom,pageto,next=0,forced=0,sample=0){
 	//console.log("** LOADPAGE: " + pagefrom+","+pageto+","+next+","+forced);
 	if( currentBook().code == undefined){
-		console.log("REQUEST CANCELED");
+		console.log("REQUEST CANCELED: No CODE");
+		return false;
+	}
+	if(previewToken !== token){
+		console.log(`REQUEST CANCELED: TOKEN is OLD (${token}) current is ${previewToken}`);
 		return false;
 	}
 	if( true || currentBook().code === lastRequest || !lastRequest ){
@@ -13538,19 +13542,19 @@ function loadPage(pagefrom,pageto,next=0,forced=0){
 				"preview": 1
 			},
 			success: function(res){
-				console.log("LOADED: "+pagefrom+"-"+pageto);
+				console.log(`LOADED [${token}]: ${pagefrom}-${pageto}`);
 				var currentP = currentPreview();
 				for(var i=0;i<res.pages.length;i++){
 					var ind = pagefrom+i;
 					currentP["page"+ind] = res.pages[i];
 					if( ind < amount ){
 						if( ind > 2 ) ind = ind-1;
-						addPages(ind,res.pages[i]);
+						addPages(ind,res.pages[i],sample);
 					}
 				}
 				setcurrentPreview(currentP);
 				if(next>0){
-					loadPage(pageto+1, pageto+next+1, next);
+					loadPage(token, pageto+1, pageto+next+1, next,0,sample);
 				}
 			},
 			error: function(error){
@@ -13562,27 +13566,34 @@ function loadPage(pagefrom,pageto,next=0,forced=0){
 		console.log("REQUEST CANCELED");
 	}
 }
-function checkPages(page=0){
+function checkPages(page=0, sample=0){
 	var currentP = currentPreview();
 	var index = page;
 	if(page > 1) index = page + 1;
 	//console.log("** CHECKPAGES: " + page +","+index);
 	//console.log(currentP['page'+index]);
-	$(".pages").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
+	if(sample)
+	  $(".pages-top").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
+    else
+	  $(".pages-preview").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
 }
-function addPages(page,file){
+function addPages(page,file,sample=0){
 	var index = page;
 	if(page > 1) index = page + 1;
 	if( isMobile.any() == null ){
-		$(".pages").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
+		if(sample)
+	      $(".pages-top").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
+	    else
+	      $(".pages-preview").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
+	
 	}else{
 		$("#modal-page"+page).find("img").attr("src",'https://admin.materlu.com'+file);
 	}
 }
-function getNewRequest(start=0,restart=0){
-	console.log("** GETNEWREQUEST: " + start);
+function getNewRequest(start=0,restart=0,sample=0){
+  	console.log(`** GETNEWREQUEST: ${start} with TOKEN: ${++previewToken}, sample: ${sample}`);
 	var result = "";
-	//var curB = currentBook();
+	var curB = currentBook();
 	for(var i=0;i<curB.characters.length;i++){
 		delete curB.characters[i].src;
 	}
@@ -13593,7 +13604,7 @@ function getNewRequest(start=0,restart=0){
 		"storyId": curB.storyId,
 		"language": curB.language,
 		"font_style": curB.font_style,
-		"characters": curB.characters,
+		"characters": (typeof curB.characters === 'string') ? curB.characters : JSON.stringify(curB.characters),
 		"dedication": curB.dedication,
 		"photo": curB.photo
 	};
@@ -13614,9 +13625,9 @@ function getNewRequest(start=0,restart=0){
 			var result = addTocurrentBook( { "code": res.code } );
 			if( start == 1 ){
 				//loadPage(1,1,0,0);
-				loadPage(3,3+blockPages,blockPages,0);
+				loadPage(previewToken, 3,3+blockPages,blockPages,0,sample);
 			}else if( start > 1 ){
-				loadPage(start,start,blockPages,0);
+				loadPage(previewToken, start,start,blockPages,0,sample);
 			}
 			if( restart == 1 ){
 				setTimeout(function(){ window.location.reload(); }, 1200);
@@ -13678,7 +13689,7 @@ function drawModel( model=currentChar() ){
 				$("."+thisGender+"-wrapper").find("[data-layer='"+index+"']").children("img").attr("src","https://admin.materlu.com/books/"+currentB+"/layer_json/"+currentCharID+"/"+thisGender+"/o_"+value.show+color+".png");
 			}
 		});
-		model.src = "https://admin.materlu.com/api/avatar?storyId="+currentB+"&characterNo="+(currentCharToCustom+1)+"&param="+window.btoa(JSON.stringify( model ));
+		model.src = "https://admin.materlu.com/api/avatar?storyId="+currentB+"&characterNo="+(parseInt(currentCharToCustom)+1)+"&param="+window.btoa(JSON.stringify( model ));
 		newChar( model );
 	}
 	$(".previewChars").addClass("showChars");
@@ -13707,10 +13718,12 @@ function endCharacter(){
 		let curBk = currentBook();
 		curBk.characters.splice(amountChar, 1);
 		addTocurrentBook(curBk);
-		window.location.assign("dedication");
+		// window.location.assign("dedication");
+		resetBook();
 	}
 	else if( amountChar == currentBook().characters.length ){
-		window.location.assign("dedication");
+		// window.location.assign("dedication");
+		resetBook();
 	}else{
 		currentCharToCustom++;			
 		currentCharID = thisBook.characters[currentCharToCustom].id;
@@ -13724,7 +13737,7 @@ function addBreadcrumpChar(){
 	let cCharacters = currentBook().characters;
 	if(cCharacters == undefined) return false;
 	cCharacters.forEach(function(cObj, key){
-		var src = "https://admin.materlu.com/api/avatar?storyId="+currentB+"&characterNo="+(key+1)+"&param="+window.btoa(JSON.stringify( cObj ));
+		var src = "https://admin.materlu.com/api/avatar?storyId="+currentB+"&characterNo="+(parseInt(key)+1)+"&param="+window.btoa(JSON.stringify( cObj ));
 		$('.charsBreadCurrent'+key).next().prop('src', src);
 		$(".charName"+key).text(cObj.name[1]);
 	})
@@ -13972,10 +13985,10 @@ function ResizeImage() {
 			return;
 		}
 		
-		var dedicatoryObj = {"language":lang }
-		if( imgData != undefined ) dedicatoryObj.photo = imgData;
-		var result = addTocurrentBook( dedicatoryObj );
-		getNewRequest(0);
+		// var dedicatoryObj = {"language":lang }
+		// if( imgData != undefined ) dedicatoryObj.photo = imgData;
+		// var result = addTocurrentBook( dedicatoryObj );
+		// getNewRequest(0);
 	}
 	reader.readAsDataURL(file);
 }
@@ -13985,12 +13998,12 @@ function ResizeImage() {
 function resetBook(){
 	console.log("RESETBOOK");
 	setcurrentPreview();
-	$(".pages").turn("destroy");
-	$(".pages").removeClass("pagesLoaded");
-	$(".page").remove();
+	$("#flip-pages-preview").turn("destroy");
+	$(".pages-preview").removeClass("pagesLoaded");
+	$(".pages-preview .page").remove();
 	for(var i=1;i<(amount-1);i++){
 		if(i==2) continue;
-		$(".pages").append('<div class="singlePage previewPage" id="page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO82g4AAjcBXq8Qp6oAAAAASUVORK5CYII=" class="img-fluid"><div class="gradient"><svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#40a1f1"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9"begin="0s" dur="0.8s"values="9;15;9" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5"begin="0s" dur="0.8s"values=".5;1;.5" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle></svg></div></div>');
+		$(".pages-preview").append('<div class="singlePage previewPage" id="page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO82g4AAjcBXq8Qp6oAAAAASUVORK5CYII=" class="img-fluid"><div class="gradient"><svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#40a1f1"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9"begin="0s" dur="0.8s"values="9;15;9" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5"begin="0s" dur="0.8s"values=".5;1;.5" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle></svg></div></div>');
 	}
 	$(".previewPage:first").addClass("hard");
 	$(".previewPage:first").next().addClass("hard");
@@ -13999,7 +14012,7 @@ function resetBook(){
 	
 	getNewRequest(1);
 	
-	$('.pages').turn({
+	$('#flip-pages-preview').turn({
 		duration: 1500,
 		acceleration: true,
 		autoCenter: true,
@@ -14008,9 +14021,9 @@ function resetBook(){
 		elevation: 300
 	});
 	
-	$(".opa").removeClass("opa");
-	$('.gradient').html("");
-	$(".pages").addClass("pagesLoaded");
+	$(".pages-preview .opa").removeClass("opa");
+	$('.pages-preview .gradient').html("");
+  	$(".pages-preview").addClass("pagesLoaded");
 	
 }
 function preview_start(){
@@ -14038,13 +14051,15 @@ var pagesShown = 0;
 function resizeFrame(){
 	var w = $('#main').width();
 	if(w<=575.98){
-		$('.pages').turn('size', '300', '150');
+    	$('#flip-pages-preview').turn('size', '300', '150');
+    	// $('#flip-pages-top').turn('size', '300', '150');
 		if( pagesShown == 0 ){
 			$('#modal-phone-alert').modal('show');
 			pagesShown = 1;
 		}
 	}else{
-		$('.pages').turn('size', '', '');
+    	// $('#flip-pages-top').turn('size', '', '');
+    	$('#flip-pages-preview').turn('size', '', '');
 		$('#modal-phone-alert').modal('hide');   
 	}
 }
@@ -14113,7 +14128,7 @@ var defaultGen = gen[rnd];
 var iniGen = defaultGen;
 var defaultSrc = "https://cdn.materlu.com/default/"+currentB+"_0_"+defaultGen+".png";
 var thebook = books['b'+currentB];
-var blockPages = 3;
+var blockPages = 6;
 var shown = 0;
 
 var currentPage = 1;
@@ -14167,7 +14182,8 @@ $.each( thisBook.characters, function( index, value ){
 var version = 'Ant.ChkLater.v13:20';
 var lastRequest = "";
 var defaultDedication = "It doesn't matter what you say, it doesn't matter what you do, it doesn't matter where you are. I will always love you, child.";
-var imgData = ""
+var imgData = "";
+var previewToken = 0;
 </script>
 
 
@@ -14312,7 +14328,7 @@ var imgData = ""
               <div class="container h5 text-teal mb-2 text-center">Check out this sample book</div>
               <div class="d-flex flex-column">
                 <div class="d-flex flex-column align-items-center justify-content-center position-relative">
-                  <div class="pages shadow mt-3">
+                  <div id="flip-pages-top" class="pages-top pages shadow mt-3">
                     <div class="singlePage previewPage hard" id="page1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="4" alt="Sapin's Motorcyle"></div>
                   </div>
                   <div class="turn-page-help d-flex flex-row align-self-end">
@@ -14323,7 +14339,7 @@ var imgData = ""
               </div> 
               <div class="container h5 text-teal mb-2 text-center">Do you like the book? Complete the customisation<br> (characters, picture, inscription)</div>
               <div class="flex">
-                <a href="personalization" class="btn btn-materlu mt-1" id="main-btn-materlu">Complete customization</a>
+                <a href="#container_personalization" class="btn btn-materlu mt-1" id="main-btn-materlu">Start Personalization</a>
               </div>
               <div class="story-monster2">
                 <iframe src="https://cdn.materlu.com/img/monsters/anim003/index.html" class="headerMonsteriframe"></iframe>
@@ -14377,7 +14393,7 @@ var imgData = ""
                         <!-- liTXT -->
                       </ul>
                     </div>
-                    <a href="personalization" class="btn btn-materlu mt-1" id="main-btn-materlu">Complete customization</a>
+                    <a href="#container_personalization" class="btn btn-materlu mt-1" id="main-btn-materlu">Start Personalization</a>
                   </div>
                 </div>
               </div>
@@ -14386,7 +14402,7 @@ var imgData = ""
         </div>
       </div>
     </div>
-    <div class="bg-story container-fluid height-custom px-0">
+    <div id="container_personalization" class="bg-story container-fluid height-custom px-0">
       <div class="bg-gradient-translucid height-custom">
         <div class="container position-relative flex-column">
           <form action="" method="post" id="create_story_customized_form">
@@ -14964,7 +14980,7 @@ var imgData = ""
         </div>
       </div>
     </div>
-    <section>
+    <section id="container_dedication">
       <div class="container-fluid bg-gradient-light-7 dedicatory-section position-relative px-0 pt-1">
         <div class="bg-gradient-2 py-2"></div>
         <div class="bg-img container-fluid px-0">
@@ -15000,8 +15016,8 @@ var imgData = ""
                     <a class="btn btn-materlu btn-ideas text-white" href="#" title="Ideas" data-toggle="modal" data-target=".no-ideas"><i class="fas fa-lightbulb pr-3"></i>Suggestions</a >
                   </div>
                   <div class="d-flex align-items-center justify-content-center mt-4">
-                    <button class="btn btn-materlu nextStep" title="No photo added" data-toggle="modal" data-target=".no-photo">See book</button> 
-                    <a class="btn btn-materlu _nextStep" href="preview" style="display: none;">See book</a>									
+                    <button class="btn btn-materlu nextStep" title="No photo added" data-toggle="modal" data-target=".no-photo">Save and Preview</button> 
+                    <button class="btn btn-materlu _nextStep" style="display: none;">Save and Preview</button> 
                   </div>                                      
                 </div>
                         
@@ -15011,7 +15027,7 @@ var imgData = ""
         </div>
       </div>
     </section>
-    <div class="main-wrapper container-fluid bg-gradient-light-3 px-0"> 
+    <div id="container_preview" class="main-wrapper container-fluid bg-gradient-light-3 px-0"> 
       <div class="bg-img">
           <div class="d-flex flex-md-row flex-column-reverse justify-content-md-between bg-gradient-2 title">
               <div class="d-flex align-items-center justify-content-center">
@@ -15114,7 +15130,9 @@ var imgData = ""
           <div class="main-container container d-flex justify-content-center align-items-center">
               <div class="d-flex flex-column">
                   <div class="d-flex flex-column align-items-center justify-content-center position-relative">
-                      <div class="pages shadow mt-3"></div>
+                      <div id="flip-pages-preview" class="pages-preview pages shadow mt-3">
+                        <div class="singlePage previewPage hard" id="page1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="4" alt="Sapin's Motorcyle"></div>
+                      </div>
                       <div class="turn-page-help d-flex flex-row align-self-end">
                           <p class="text-center text-white">Pull corners to turn the page</p>
                           <svg viewBox="0 0 47.6 74.2">
@@ -15131,7 +15149,7 @@ var imgData = ""
                       </div>             
                   </div>
                   <div class="d-flex flex-sm-row flex-column align-items-center justify-content-center">
-                      <a class="btn btn-secondary btn-back mt-3 mb-sm-3 mx-3" href="dedication"><i class="fas fa-arrow-left pr-3"></i>Edit</a>                        
+                      <!-- <a class="btn btn-secondary btn-back mt-3 mb-sm-3 mx-3" href="dedication"><i class="fas fa-arrow-left pr-3"></i>Edit</a>                         -->
                       <button class="btn btn-materlu my-3 mx-3 addToCart"><i class="fas fa-shopping-cart fa-sm pr-3"></i>Add to cart</button>
                   </div>
               </div>           
@@ -15220,7 +15238,8 @@ var imgData = ""
       <p class="text-center">You have not added any photos for the dedication. If you don't choose any, the character you created will come out instead. <br> Are you sure you want to continue?</p>
     </div>
     <div class="modal-footer border-cyan">
-      <a class="btn btn-primary" href="preview">Continue</a>
+      <!-- <a class="btn btn-primary" href="preview">Continue</a> -->
+      <button type="button" class="btn btn-secondary _nextStep" data-dismiss="modal">Continue</button>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit</button>
     </div>
     </div>
@@ -15276,7 +15295,7 @@ var imgData = ""
 		<div class="d-flex flex-lg-row flex-column">
                             <div class="col-lg-5 d-flex flex-sm-row flex-column align-items-center justify-content-center justify-content-xl-between px-0">
                                 <div class="d-flex justify-content-sm-start justify-content-center py-sm-0 py-2 py-xl-0">
-                                <div class="h6 text-center text-light mb-0 mx-3" title="v.20201008141539">&copy; 2020 Materlu</div> 
+                                <div class="h6 text-center text-light mb-0 mx-3" title="v.20201008194647">&copy; 2020 Materlu</div> 
                                 </div>
                                 <div class="d-flex justify-content-sm-end justify-content-center py-xl-0 py-2">
 									<a class="fa-stack mx-lg-3 mx-2" href="https://www.youtube.com/channel/UCKCsaUnaKI6VTt21PQl9qLw" target="_blank">
@@ -15713,28 +15732,6 @@ window.onscroll = function() {
 	completeBook();
 	getCovers( iniGen );
 </script>
-<!-- DEFAULT PREVIEW Start -->
-<script>
-	var currentP = currentPreview();
-	if( isMobile.any() ) {
-		$(".pages").addClass("mb-4");
-		$(".pages").addClass("LBmodal");
-		$(".pages").removeClass("pages");
-		$(".turn-page-help").remove();
-		$("#page1").attr("data-toggle","modal");
-		$("#page1").attr("data-target","#lightBox");		
-		for(var i=3;i<amount;i++){
-			$(".viewport").append('<div class="modalPage" id="modal-page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid" data-id="4" alt="Sapin's Motorcyle"></div>');
-		}
-	}
-
-	$(".previewPage:first").addClass("hard");
-	$(".previewPage:first").next().addClass("hard");
-	$(".previewPage:last").addClass("hard");
-	$(".previewPage:last").prev().addClass("hard");
-
-	getNewRequest(1);
-</script>
 
 <!-- JS Footer from customization -->
 <script>
@@ -15884,24 +15881,51 @@ this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.le
 </script>
 <script defer>
 	if( isMobile.any() == null ){
-		$('.pages').turn({
-			pages: amount-2,
-			duration: 1500,
-			acceleration: true,
-			autoCenter: true,
-			gradients: true,
-			turnCorners: "bl,br",
-			elevation: 300
-		});
-		$(".opa").removeClass("opa");
-		$('.gradient').html("");
-		$(".pages").addClass("pagesLoaded");
-	}
+		// $('#flip-pages-top').turn({
+		// 	pages: amount-2,
+		// 	duration: 1500,
+		// 	acceleration: true,
+		// 	autoCenter: true,
+		// 	gradients: true,
+		// 	turnCorners: "bl,br",
+		// 	elevation: 300
+		// });
+		// $(".pages-top .opa").removeClass("opa");
+		// $('.pages-top .gradient').html("");
+    // $(".pages-top").addClass("pagesLoaded");
+    
+    $('#flip-pages-preview').turn({
+      duration: 1500,
+      acceleration: true,
+      autoCenter: true,
+      gradients: true,
+      turnCorners: "bl,br",
+      elevation: 300
+    });
+    
+    $(".pages-preview .opa").removeClass("opa");
+    $('.pages-preview .gradient').html("");
+    $(".pages-preview").addClass("pagesLoaded");
+	}else{
+    $(".pages").addClass("mb-4");
+		$(".pages").addClass("LBmodal");
+    $(".pages").removeClass("pages");
+		$(".turn-page-help").remove();
+		$("#page1").attr("data-toggle","modal");
+		$("#page1").attr("data-target","#lightBox");		
+		for(var i=3;i<amount;i++){
+			$(".viewport").append('<div class="modalPage" id="modal-page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid" data-id="9" alt="The secret broom"></div>');
+		}
+  }
 </script>
 <script>
 	dedication_start();
 	preview_start();
 	create7LayersIMG();
+// Start sample book
+	// getNewRequest(1, 0, 1);
+// Start preview book
+  	resetBook();
 </script>
 <script>
 if( loadSession('cookies') == false ){
@@ -16073,6 +16097,13 @@ $("body").on("click",".btn-back", function() {
 $("body").on("click",".saveChar", function() {
 	if( $("#character_name").val() != "" ){
 		endCharacter();  
+
+	    var dedication_ready = true;
+	    if(true){
+	      window.location.href = "#container_preview";
+	    }else{
+	      window.location.href = "#container_dedication";
+	    }
 	}	
 });
 $("body").on( "change", "#character_name", function() {
@@ -16229,9 +16260,9 @@ $('#upload-photo').on('change', function(e){
 	ResizeImage();
 });
 $('#dedicatory').on('change', function(e){
-	var dedicatoryObj = {"dedication": $('#dedicatory').val() };
-	addTocurrentBook( dedicatoryObj );
-	getNewRequest(0);
+	// var dedicatoryObj = {"dedication": $('#dedicatory').val() };
+	// addTocurrentBook( dedicatoryObj );
+	// resetBook();
 });
 
 if( imgData != undefined && imgData != ""){
@@ -16249,16 +16280,21 @@ $('.nextStep').on('click', function(e){
 
 $('._nextStep').on('click', function(e){
 	e.preventDefault();
-	if( checkcurrentBook().rc==0 || imgData != "") {
-		window.location.href = "preview";
-	}        
+	// if( checkcurrentBook().rc==0 || imgData != "") {
+	// 	window.location.href = "preview";
+	// }        
+	var dedicatoryObj = {"dedication": $('#dedicatory').val(), "photo": imgData };
+	addTocurrentBook( dedicatoryObj );
+	resetBook();
+	window.location.href = "#container_preview";
 });
 
 /* JS Ready from preview */
 $("body").on("click",".addToCart", function() {
 	if( addToCart() != false ){
-	window.location.assign("/en/cart");
-}
+		window.location.assign("/en/cart");
+	}
+
 });
 
 

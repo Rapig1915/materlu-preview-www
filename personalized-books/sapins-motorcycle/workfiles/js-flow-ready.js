@@ -91,6 +91,13 @@ $("body").on("click",".btn-back", function() {
 $("body").on("click",".saveChar", function() {
 	if( $("#character_name").val() != "" ){
 		endCharacter();  
+
+	    var dedication_ready = true;
+	    if(true){
+	      window.location.href = "#container_preview";
+	    }else{
+	      window.location.href = "#container_dedication";
+	    }
 	}	
 });
 $("body").on( "change", "#character_name", function() {
@@ -247,9 +254,9 @@ $('#upload-photo').on('change', function(e){
 	ResizeImage();
 });
 $('#dedicatory').on('change', function(e){
-	var dedicatoryObj = {"dedication": $('#dedicatory').val() };
-	addTocurrentBook( dedicatoryObj );
-	getNewRequest(0);
+	// var dedicatoryObj = {"dedication": $('#dedicatory').val() };
+	// addTocurrentBook( dedicatoryObj );
+	// resetBook();
 });
 
 if( imgData != undefined && imgData != ""){
@@ -267,16 +274,21 @@ $('.nextStep').on('click', function(e){
 
 $('._nextStep').on('click', function(e){
 	e.preventDefault();
-	if( checkcurrentBook().rc==0 || imgData != "") {
-		window.location.href = "==(MAT_url_preview)==";
-	}        
+	// if( checkcurrentBook().rc==0 || imgData != "") {
+	// 	window.location.href = "==(MAT_url_preview)==";
+	// }        
+	var dedicatoryObj = {"dedication": $('#dedicatory').val(), "photo": imgData };
+	addTocurrentBook( dedicatoryObj );
+	resetBook();
+	window.location.href = "#container_preview";
 });
 
 /* JS Ready from preview */
 $("body").on("click",".addToCart", function() {
 	if( addToCart() != false ){
-	window.location.assign("/==(language)==/==(MAT_url_cart)==");
-}
+		window.location.assign("/==(language)==/==(MAT_url_cart)==");
+	}
+
 });
 
 
