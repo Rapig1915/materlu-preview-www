@@ -637,6 +637,127 @@ function ResizeImage() {
 </script>
 
 <script>
+function resetPreview(){
+	console.log("RESETPREVIEW");
+	setcurrentPreview();
+	$(".pages").turn("destroy");
+	$(".pages").removeClass("pagesLoaded");
+	$(".page").remove();
+	for(var i=1;i<(amount-1);i++){
+		if(i==2) continue;
+		$(".pages").append('<div class="singlePage previewPage" id="page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO82g4AAjcBXq8Qp6oAAAAASUVORK5CYII=" class="img-fluid"><div class="gradient"><svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#40a1f1"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9"begin="0s" dur="0.8s"values="9;15;9" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5"begin="0s" dur="0.8s"values=".5;1;.5" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle></svg></div></div>');
+	}
+	$(".previewPage:first").addClass("hard");
+	$(".previewPage:first").next().addClass("hard");
+	$(".previewPage:last").addClass("hard");
+	$(".previewPage:last").prev().addClass("hard");
+	
+	getNewRequest(1);
+	
+	$('.pages').turn({
+		duration: 1500,
+		acceleration: true,
+		autoCenter: true,
+		gradients: true,
+		turnCorners: "bl,br",
+		elevation: 300
+	});
+	
+	$(".opa").removeClass("opa");
+	$('.gradient').html("");
+	$(".pages").addClass("pagesLoaded");
+	
+}
+function preview_start(){
+	var _currentBook = currentBook();
+	if(!isEmpty(_currentBook)){
+		if( _currentBook.language == undefined ) _currentBook.language = "==(language)==";
+		switch( _currentBook.language ){
+			case 'en': text='English';		src="==(MAT_cdn_books)==uploads/united-states.svg";  lang='en'; break;
+			case 'es': text='Español';		src="==(MAT_cdn_books)==uploads/spain.svg";          lang='es'; break;
+			case 'fr': text='French';		src="==(MAT_cdn_books)==uploads/france.svg";         lang='fr'; break;
+			case 'it': text='Italian';		src="==(MAT_cdn_books)==uploads/italy.svg";          lang='it'; break;
+			case 'de': text='German';		src="==(MAT_cdn_books)==uploads/germany.svg";        lang='de'; break;
+			//			case 'pt': text='Portuguese';	src="==(MAT_cdn_books)==uploads/portugal.svg";       lang='pt'; break;
+			default:  text='English';		src="==(MAT_cdn_books)==uploads/united-states.svg";  lang='en';
+		}
+		$("#choose-language").find(".storySettings_language").html('<img src="'+src+'" class="country_icon mr-3" alt="country icon"> '+text);
+		
+		if( _currentBook.font_style != null && _currentBook.font_style != undefined ){
+			var letterText = $("[value='"+_currentBook.font_style+"']").parent().text();
+			$("#choose-letter-type").find(".storySettings_language").text(letterText);
+		}
+	}
+}
+var pagesShown = 0;
+function resizeFrame(){
+	var w = $('#main').width();
+	if(w<=575.98){
+		$('.pages').turn('size', '300', '150');
+		if( pagesShown == 0 ){
+			$('#modal-phone-alert').modal('show');
+			pagesShown = 1;
+		}
+	}else{
+		$('.pages').turn('size', '', '');
+		$('#modal-phone-alert').modal('hide');   
+	}
+}
+function addToCart(){
+	console.log("Added to cart");
+	var curB = currentBook();
+	curB.font_style = lettertype;
+	curB.language = lang;
+	try {
+		var cart = JSON.parse( loadSession("cart") );
+		if( Object.keys(cart).length == 0 ){
+			throw "Empty";
+		}
+	}catch(e){	
+		console.log("New cart");
+		var cart = {"books":[]};
+	}
+	
+	curB.dedication = parseDedication( curB.dedication );
+	curB.res = {
+		//		"cover": $("#page1").find("img").attr("src"),
+		"title": "<<(materbooks.data.==(language)==[?].title)>>",
+		"price": "<<(materbooks.data.==(language)==[?].price)>>",
+		"currency": "EUR",
+		"symbol": "€",
+		"characters": []
+	};
+	for( var i=0;i<curB.characters.length;i++){
+		var model =	{
+			"name": curB.characters[i].name,
+			"img": curB.characters[i].src
+		}
+		delete curB.characters[i].src;
+		curB.res.characters.push(model);
+	}
+	
+	try {
+		cart.books.push( curB );
+		saveSession("cart",JSON.stringify(cart),'local',1);
+		
+		// Pinterest Pixel:
+		pintrk('track', 'addtocart', {
+			value: <<(materbooks.data.==(language)==[?].price)>>,
+			order_quantity: 1,
+			currency: 'EUR'
+		});
+		// FB Pixel
+		fbq('track', 'AddToCart');
+		
+	}catch(e){
+		console.log(e);
+		return false;
+	}
+	return cart;
+}
+</script>
+
+<script>
 var currentB = <<(materbooks.data.==(language)==[?].id)>>;
 var defaultModel = defaultModel['b'+currentB];
 var character_txt = ' ==(GEN_character_txt)==';

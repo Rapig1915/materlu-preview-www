@@ -21,6 +21,12 @@
 			$(".viewport").append('<div class="modalPage" id="modal-page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid" data-id="<<(materbooks.data.==(language)==[?].id)>>" alt="<<(materbooks.data.==(language)==[?].title)>>"></div>');
 		}
 	}
+
+	$(".previewPage:first").addClass("hard");
+	$(".previewPage:first").next().addClass("hard");
+	$(".previewPage:last").addClass("hard");
+	$(".previewPage:last").prev().addClass("hard");
+
 	getNewRequest(1);
 </script>
 
@@ -188,5 +194,6 @@ this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.le
 </script>
 <script>
 	dedication_start();
+	preview_start();
 	create7LayersIMG();
 </script>
