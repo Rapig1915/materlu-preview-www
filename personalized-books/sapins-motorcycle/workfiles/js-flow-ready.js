@@ -92,11 +92,11 @@ $("body").on("click",".saveChar", function() {
 	if( $("#character_name").val() != "" ){
 		endCharacter();  
 
-	    var dedication_ready = true;
-	    if(true){
-	      window.location.href = "#container_preview";
+	    var dedication_ready = false;
+	    if(dedication_ready){
+	      scrollToElement("#container_preview", 1000);
 	    }else{
-	      window.location.href = "#container_dedication";
+	      scrollToElement("#container_dedication", 1000);
 	    }
 	}	
 });
@@ -107,7 +107,7 @@ $("body").on( "change", "#character_name", function() {
 $("body").off("click",".runProp");
 $("body").on("click",".runProp", function() {
 	// addToCurrentChar(gender,name,layer,type,jsonItem)
-	$("body").addClass("wait");
+	// $("body").addClass("wait");
 	var type = $(this).attr("data-type");
 	var item = {
 		"gender":		 currentGenderChar,
@@ -280,7 +280,11 @@ $('._nextStep').on('click', function(e){
 	var dedicatoryObj = {"dedication": $('#dedicatory').val(), "photo": imgData };
 	addTocurrentBook( dedicatoryObj );
 	resetBook();
-	window.location.href = "#container_preview";
+
+	$("#flip-pages-top").closest(".container-top-preview").remove();
+	$(".book-information-container").css("margin-top", "0");
+	$("#container_preview").show();
+	scrollToElement("#container_preview", 1000);
 });
 
 /* JS Ready from preview */

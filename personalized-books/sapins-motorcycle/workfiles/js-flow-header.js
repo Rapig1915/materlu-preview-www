@@ -27,6 +27,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha256-DHF4zGyjT7GOMPBwpeehwoey18z8uiz98G4PRu2lV0A=" crossorigin="anonymous"></script>
 
 <script>
+  function scrollToElement(selector, duration)
+  {
+    $('html, body').animate({
+        scrollTop: parseInt($(selector).offset().top)
+    }, duration);
+  }
+</script>
+
+<script>
 function addToCarrousel(book){
 	var pixel = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 	var part = '<div class="col-xl-4 col-lg-6 col-md-6 col-12"><div class="card cardbook mt-3">'+
@@ -707,13 +716,15 @@ function resizeFrame(){
 	var w = $('#main').width();
 	if(w<=575.98){
     	$('#flip-pages-preview').turn('size', '300', '150');
-    	// $('#flip-pages-top').turn('size', '300', '150');
+    	if($('#flip-pages-top').length > 0)
+    	  $('#flip-pages-top').turn('size', '300', '150');
 		if( pagesShown == 0 ){
 			$('#modal-phone-alert').modal('show');
 			pagesShown = 1;
 		}
 	}else{
-    	// $('#flip-pages-top').turn('size', '', '');
+    	if($('#flip-pages-top').length > 0)
+    	  $('#flip-pages-top').turn('size', '', '');
     	$('#flip-pages-preview').turn('size', '', '');
 		$('#modal-phone-alert').modal('hide');   
 	}
@@ -783,7 +794,7 @@ var defaultGen = gen[rnd];
 var iniGen = defaultGen;
 var defaultSrc = "==(MAT_cdn2)==default/"+currentB+"_0_"+defaultGen+".png";
 var thebook = books['b'+currentB];
-var blockPages = 6;
+var blockPages = 3;
 var shown = 0;
 
 var currentPage = 1;

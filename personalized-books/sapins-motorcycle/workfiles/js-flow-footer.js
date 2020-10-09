@@ -156,31 +156,31 @@ this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.le
 </script>
 <script defer>
 	if( isMobile.any() == null ){
-		// $('#flip-pages-top').turn({
-		// 	pages: amount-2,
-		// 	duration: 1500,
-		// 	acceleration: true,
-		// 	autoCenter: true,
-		// 	gradients: true,
-		// 	turnCorners: "bl,br",
-		// 	elevation: 300
-		// });
-		// $(".pages-top .opa").removeClass("opa");
-		// $('.pages-top .gradient').html("");
-    // $(".pages-top").addClass("pagesLoaded");
-    
-    $('#flip-pages-preview').turn({
-      duration: 1500,
-      acceleration: true,
-      autoCenter: true,
-      gradients: true,
-      turnCorners: "bl,br",
-      elevation: 300
-    });
-    
-    $(".pages-preview .opa").removeClass("opa");
-    $('.pages-preview .gradient').html("");
-    $(".pages-preview").addClass("pagesLoaded");
+		$('#flip-pages-top').turn({
+			pages: amount-2,
+			duration: 1500,
+			acceleration: true,
+			autoCenter: true,
+			gradients: true,
+			turnCorners: "bl,br",
+			elevation: 300
+		});
+		$(".pages-top .opa").removeClass("opa");
+		$('.pages-top .gradient').html("");
+	    $(".pages-top").addClass("pagesLoaded");
+	    
+	    $('#flip-pages-preview').turn({
+	      duration: 1500,
+	      acceleration: true,
+	      autoCenter: true,
+	      gradients: true,
+	      turnCorners: "bl,br",
+	      elevation: 300
+	    });
+	    
+	    $(".pages-preview .opa").removeClass("opa");
+	    $('.pages-preview .gradient').html("");
+	    $(".pages-preview").addClass("pagesLoaded");
 	}else{
     $(".pages").addClass("mb-4");
 		$(".pages").addClass("LBmodal");
@@ -198,7 +198,7 @@ this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.le
 	preview_start();
 	create7LayersIMG();
 // Start sample book
-	// getNewRequest(1, 0, 1);
+	getNewRequest(1, 0, 1);
 // Start preview book
-  	resetBook();
+// resetBook();
 </script>

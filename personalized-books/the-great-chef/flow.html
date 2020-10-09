@@ -13372,6 +13372,15 @@ function encodeMyJSON(json){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js" integrity="sha256-DHF4zGyjT7GOMPBwpeehwoey18z8uiz98G4PRu2lV0A=" crossorigin="anonymous"></script>
 
 <script>
+  function scrollToElement(selector, duration)
+  {
+    $('html, body').animate({
+        scrollTop: parseInt($(selector).offset().top)
+    }, duration);
+  }
+</script>
+
+<script>
 function addToCarrousel(book){
 	var pixel = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 	var part = '<div class="col-xl-4 col-lg-6 col-md-6 col-12"><div class="card cardbook mt-3">'+
@@ -14052,13 +14061,15 @@ function resizeFrame(){
 	var w = $('#main').width();
 	if(w<=575.98){
     	$('#flip-pages-preview').turn('size', '300', '150');
-    	// $('#flip-pages-top').turn('size', '300', '150');
+    	if($('#flip-pages-top').length > 0)
+    	  $('#flip-pages-top').turn('size', '300', '150');
 		if( pagesShown == 0 ){
 			$('#modal-phone-alert').modal('show');
 			pagesShown = 1;
 		}
 	}else{
-    	// $('#flip-pages-top').turn('size', '', '');
+    	if($('#flip-pages-top').length > 0)
+    	  $('#flip-pages-top').turn('size', '', '');
     	$('#flip-pages-preview').turn('size', '', '');
 		$('#modal-phone-alert').modal('hide');   
 	}
@@ -14128,7 +14139,7 @@ var defaultGen = gen[rnd];
 var iniGen = defaultGen;
 var defaultSrc = "https://cdn.materlu.com/default/"+currentB+"_0_"+defaultGen+".png";
 var thebook = books['b'+currentB];
-var blockPages = 6;
+var blockPages = 3;
 var shown = 0;
 
 var currentPage = 1;
@@ -14322,7 +14333,7 @@ var previewToken = 0;
       <div class="bg-img container-fluid d-flex px-0">
         <div class="bg-img2 container-fluid d-flex px-0">
           <div class="bg-img3 container-fluid d-flex flex-column px-0">
-            <div class="container-fluid d-flex flex-column justify-content-center align-items-center position-relative my-5 pb-5">
+            <div class="container-top-preview container-fluid d-flex flex-column justify-content-center align-items-center position-relative my-5 pb-5">
               <!-- <h3 class="h1 text-teal text-center py-3">Check it out!</h3> -->
               <!-- <div class="container h5 text-teal mb-2 text-center">Check this book sample. Once customized, add your picture and dedication.</div> -->
               <div class="container h5 text-teal mb-2 text-center">Check out this sample book</div>
@@ -14339,7 +14350,7 @@ var previewToken = 0;
               </div> 
               <div class="container h5 text-teal mb-2 text-center">Do you like the book? Complete the customisation<br> (characters, picture, inscription)</div>
               <div class="flex">
-                <a href="#container_personalization" class="btn btn-materlu mt-1" id="main-btn-materlu">Start Personalization</a>
+                <a href="#container_personalization" class="btn btn-materlu mt-1" id="main-btn-materlu" onclick="javascript:scrollToElement('#container_personalization', 1000)">Start Personalization</a>
               </div>
               <div class="story-monster2">
                 <iframe src="https://cdn.materlu.com/img/monsters/anim003/index.html" class="headerMonsteriframe"></iframe>
@@ -14393,7 +14404,7 @@ var previewToken = 0;
                         <!-- liTXT -->
                       </ul>
                     </div>
-                    <a href="#container_personalization" class="btn btn-materlu mt-1" id="main-btn-materlu">Start Personalization</a>
+                    <a href="#container_personalization" class="btn btn-materlu mt-1" id="main-btn-materlu" onclick="javascript:scrollToElement('#container_personalization', 1000)">Start Personalization</a>
                   </div>
                 </div>
               </div>
@@ -14410,7 +14421,8 @@ var previewToken = 0;
               <div>
                 <div class="line-breadcrumb"></div>
                 <div class="story-name bg-gradient-green">
-                  <h1 class="h4 m-0">The great chef</h1>
+                  <!-- <h1 class="h4 m-0">The great chef</h1> -->
+                  <h1 class="h4 m-0">Characters</h1>
                 </div>
                 <div class="d-flex flex-row col-6 offset-6 justify-content-end px-0 mt-2 charsBreadcBox">
                   <a class="d-flex flex-column align-items-center mx-sm-3 mx-1 charsBreadc" data-id="0">
@@ -15027,7 +15039,7 @@ var previewToken = 0;
         </div>
       </div>
     </section>
-    <div id="container_preview" class="main-wrapper container-fluid bg-gradient-light-3 px-0"> 
+    <div id="container_preview" class="main-wrapper container-fluid bg-gradient-light-3 px-0" style="display: none;"> 
       <div class="bg-img">
           <div class="d-flex flex-md-row flex-column-reverse justify-content-md-between bg-gradient-2 title">
               <div class="d-flex align-items-center justify-content-center">
@@ -15295,7 +15307,7 @@ var previewToken = 0;
 		<div class="d-flex flex-lg-row flex-column">
                             <div class="col-lg-5 d-flex flex-sm-row flex-column align-items-center justify-content-center justify-content-xl-between px-0">
                                 <div class="d-flex justify-content-sm-start justify-content-center py-sm-0 py-2 py-xl-0">
-                                <div class="h6 text-center text-light mb-0 mx-3" title="v.20201008194649">&copy; 2020 Materlu</div> 
+                                <div class="h6 text-center text-light mb-0 mx-3" title="v.20201008204630">&copy; 2020 Materlu</div> 
                                 </div>
                                 <div class="d-flex justify-content-sm-end justify-content-center py-xl-0 py-2">
 									<a class="fa-stack mx-lg-3 mx-2" href="https://www.youtube.com/channel/UCKCsaUnaKI6VTt21PQl9qLw" target="_blank">
@@ -15881,31 +15893,31 @@ this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.le
 </script>
 <script defer>
 	if( isMobile.any() == null ){
-		// $('#flip-pages-top').turn({
-		// 	pages: amount-2,
-		// 	duration: 1500,
-		// 	acceleration: true,
-		// 	autoCenter: true,
-		// 	gradients: true,
-		// 	turnCorners: "bl,br",
-		// 	elevation: 300
-		// });
-		// $(".pages-top .opa").removeClass("opa");
-		// $('.pages-top .gradient').html("");
-    // $(".pages-top").addClass("pagesLoaded");
-    
-    $('#flip-pages-preview').turn({
-      duration: 1500,
-      acceleration: true,
-      autoCenter: true,
-      gradients: true,
-      turnCorners: "bl,br",
-      elevation: 300
-    });
-    
-    $(".pages-preview .opa").removeClass("opa");
-    $('.pages-preview .gradient').html("");
-    $(".pages-preview").addClass("pagesLoaded");
+		$('#flip-pages-top').turn({
+			pages: amount-2,
+			duration: 1500,
+			acceleration: true,
+			autoCenter: true,
+			gradients: true,
+			turnCorners: "bl,br",
+			elevation: 300
+		});
+		$(".pages-top .opa").removeClass("opa");
+		$('.pages-top .gradient').html("");
+	    $(".pages-top").addClass("pagesLoaded");
+	    
+	    $('#flip-pages-preview').turn({
+	      duration: 1500,
+	      acceleration: true,
+	      autoCenter: true,
+	      gradients: true,
+	      turnCorners: "bl,br",
+	      elevation: 300
+	    });
+	    
+	    $(".pages-preview .opa").removeClass("opa");
+	    $('.pages-preview .gradient').html("");
+	    $(".pages-preview").addClass("pagesLoaded");
 	}else{
     $(".pages").addClass("mb-4");
 		$(".pages").addClass("LBmodal");
@@ -15923,9 +15935,9 @@ this.data();b.effect&&b.effect.stop();if(a){a.to.length||(a.to=[a.to]);a.from.le
 	preview_start();
 	create7LayersIMG();
 // Start sample book
-	// getNewRequest(1, 0, 1);
+	getNewRequest(1, 0, 1);
 // Start preview book
-  	resetBook();
+// resetBook();
 </script>
 <script>
 if( loadSession('cookies') == false ){
@@ -16098,11 +16110,11 @@ $("body").on("click",".saveChar", function() {
 	if( $("#character_name").val() != "" ){
 		endCharacter();  
 
-	    var dedication_ready = true;
-	    if(true){
-	      window.location.href = "#container_preview";
+	    var dedication_ready = false;
+	    if(dedication_ready){
+	      scrollToElement("#container_preview", 1000);
 	    }else{
-	      window.location.href = "#container_dedication";
+	      scrollToElement("#container_dedication", 1000);
 	    }
 	}	
 });
@@ -16113,7 +16125,7 @@ $("body").on( "change", "#character_name", function() {
 $("body").off("click",".runProp");
 $("body").on("click",".runProp", function() {
 	// addToCurrentChar(gender,name,layer,type,jsonItem)
-	$("body").addClass("wait");
+	// $("body").addClass("wait");
 	var type = $(this).attr("data-type");
 	var item = {
 		"gender":		 currentGenderChar,
@@ -16286,7 +16298,11 @@ $('._nextStep').on('click', function(e){
 	var dedicatoryObj = {"dedication": $('#dedicatory').val(), "photo": imgData };
 	addTocurrentBook( dedicatoryObj );
 	resetBook();
-	window.location.href = "#container_preview";
+
+	$("#flip-pages-top").closest(".container-top-preview").remove();
+	$(".book-information-container").css("margin-top", "0");
+	$("#container_preview").show();
+	scrollToElement("#container_preview", 1000);
 });
 
 /* JS Ready from preview */
