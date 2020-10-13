@@ -113,6 +113,7 @@ function mainSceneShow(){
 	'<p class="pt-2 px-3 mb-0">'+books['b'+currentB].description+'</p>'+
 	'</div>';
 	$('._description-main').html(_descMain);
+	$('.about-book.description').html(_descMain);
 	
 	//
 	var destiny = "==(MAT_url_customization)==";
@@ -781,6 +782,141 @@ function addToCart(){
 	}
 	return cart;
 }
+</script>
+
+<script>
+  function readCharacterInfo(characterNo){
+    var curB = currentBook();
+    return curB && curB.characters && curB.characters[characterNo-1];
+  }
+
+  function summaryCharacterToHtml(info)
+  {
+    if(!info) return "<h4>Invalid</h4>";
+    var ret = `<h4 class="character-name">${info.name && info.name[1]}<br/>(${info.gender})</h4>`; 
+    if(info.layers){
+      ret += `<span class="character-summary">`;
+      for(var key in info.layers){
+        ret += `${key}: ${info.layers[key].show || "none"}, `;
+      }
+      ret += `</span>`;
+    } 
+
+    return ret;
+  }
+
+  function initSteps(){
+    var clone = $(".steps.step-character:first").clone();
+    
+    for(var i = 1; i <= amountChar; i ++){
+      var step = null;
+      if(i == 1){
+        step = $(".steps.step-character:first");
+      }else{
+        clone = clone.clone();
+        $(clone).attr("data-character-no", i);
+        
+        var order = (i == 2 && "nd") || (i == 3 && "rd") || "th";
+        $(clone).find(".step-title").text(`Personalize your ${i}${order} character`);
+        $(clone).find(".step-number").text(`${i}.`);
+        $(clone).find(".customize-box").remove();
+        $(clone).attr("data-character-no", i);
+
+        step = $(clone).insertBefore($(".steps.step-configuration"));
+      }
+
+      var info = readCharacterInfo(i);
+      if(info){
+        $(step).addClass("saved");
+        $(step).find(".preview-character").attr("src", info && info.src);
+        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
+      }
+    }
+
+    $(".steps.step-configuration .step-number").text(`${i}.`);
+    $(".steps.step-dedication .step-number").text(`${i+1}.`);
+
+    var curB = currentBook();
+    if(curB && curB.language && curB.font_style){
+      $(".steps.step-configuration").addClass("saved");
+      $(".steps.step-configuration .text").text(`Language: ${(curB && curB.language) || ""}, Font-Style: ${(curB && curB.font_style) || ""}`);
+    }
+
+    if(curB && (curB.photo || curB.dedication)){
+      $(".steps.step-dedication").addClass("saved");
+      $(".steps.step-dedication .dedication-photo").attr("src", (curB && curB.photo) || "");
+      $(".steps.step-dedication .dedication-text").text((curB && curB.dedication) || "");
+    }
+  }
+
+  function updateStepData(){
+    for(var i = 1; i <= amountChar; i ++){
+      var step = $(`.steps.step-character[data-character-no=${i}]`);
+      console.log(step)
+      if(!step || step.length === 0) continue;
+
+      var info = readCharacterInfo(i);
+      if(info){
+        $(step).addClass("saved");
+        $(step).find(".preview-character").attr("src", info && info.src);
+        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
+      }else{
+        $(step).removeClass("saved");
+      }
+    }
+
+    var curB = currentBook();
+    $(".steps.step-configuration .text").text(`Language: ${(curB && curB.language) || ""}, Font-Style: ${(curB && curB.font_style) || ""}`);
+
+    $(".steps.step-dedication .dedication-photo").attr("src", (curB && curB.photo) || "");
+    $(".steps.step-dedication .dedication-text").text((curB && curB.dedication) || "");
+  }
+
+  function startEditingStep(type, /*0:character, 1:configuration, 2:dedication*/ characterNo){
+    if(type === 0){
+      $(`.steps.step-character[data-character-no=${characterNo}] .edit-step`).trigger("click");
+    }else if(type === 1){
+      $(`.steps.step-configuration .edit-step`).trigger("click");
+    }else if(type === 2){
+      $(`.steps.step-dedication .edit-step`).trigger("click");
+    }
+  }
+
+  function checkStepsForNextAction()
+  {
+    for(var i = 1; i <= amountChar; i ++){
+      var step = $(`.steps.step-character[data-character-no=${i}]`);
+      if(!step || step.length === 0) continue;
+
+      var info = readCharacterInfo(i);
+      if(info){
+        $(step).addClass("saved");
+        $(step).find(".preview-character").attr("src", info && info.src);
+        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
+      }else{
+        $(step).removeClass("saved");
+        startEditingStep(0, i);
+        return;
+      }
+    }
+
+    var curB = currentBook();
+    if(!curB || !curB.language || !curB.font_style)
+    {
+      startEditingStep(1,0);
+      return;
+    }
+    if(!curB || !curB.photo || !curB.dedication)
+    {
+      startEditingStep(2,0);
+      return;
+    }
+
+    resetBook();
+    // $("#flip-pages-top").closest(".container-top-preview").remove();
+    $("#flip-pages-top").remove();
+    scrollToElement("#final-step", 1000);
+  }
 </script>
 
 <script>

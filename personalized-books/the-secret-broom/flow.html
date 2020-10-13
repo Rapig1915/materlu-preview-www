@@ -11039,23 +11039,6 @@ margin-top: 42px;}*/
 .main-container {
   min-height: calc(100vh - 65px); }
 
-.bg-gradient-light-story-page {
-  /* background: linear-gradient(-20deg, #fbfcdb 0%, #e9defa 50%, #fbfcdb 100%) !important; */
-} 
-
-.bg-img {
-  /* background-image: url(https://cdn.materlu.com/img/bg-img/forma3rosa.png);  background-repeat: no-repeat;  */
-}
-
-.bg-img2 {
-  /* background-image: url(https://cdn.materlu.com/img/bg-img/forma5b.png);  background-repeat: no-repeat;  */
-}
-
-.bg-img3 {
-  /* background-image: url(https://cdn.materlu.com/img/bg-img/forma4rosa2-inverse.png); */
-  background-repeat: no-repeat; 
-}
-
 @media (max-width: 575.98px) {
   .bg-img {
     background-position: 20vw -5vh; }
@@ -11137,11 +11120,6 @@ margin-top: 42px;}*/
 .book-information-container {
   margin-top: -15vh;
   min-height: 70vh; }
-
-.other-books-container {
-  /* -webkit-box-shadow: inset 0px 5px 0px 0px #4b95eb, 0px -3px 8px 1px rgba(0, 0, 0, 0.31);
-          box-shadow: inset 0px 5px 0px 0px #4b95eb, 0px -3px 8px 1px rgba(0, 0, 0, 0.31); */
-} 
 
 .carouselOurBooks .cardbook {
   border-width: 0 !important;
@@ -11300,10 +11278,6 @@ margin-top: 42px;}*/
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
     display: inline-flex; }
-
-.img-container {
-  /* background-image: url(https://cdn.materlu.com/img/bg-img/bg-our-stories.svg);  */
-}
 
 @media (max-width: 575.98px) {
   .img-container {
@@ -12725,34 +12699,6 @@ cursor: wait!important;}
 
 .pagesLoaded{
 opacity: 1;}
-/*
-======================================================================================================================
-Footer
-======================================================================================================================
-*/
-footer {
-  z-index: 1010;
-  position: relative;
-  -webkit-box-shadow: 0 -1px 4px 2px rgba(53, 53, 53, 0.3);
-          box-shadow: 0 -1px 4px 2px rgba(53, 53, 53, 0.3);
-  border-top: #01827b 5px solid; }
-
-.bg-gradient-green .dropdown-item:hover, .bg-gradient-green .dropdown-item:focus {
-  color: #fff;
-  text-decoration: none;
-  background-color: #028d8a; }
-
-.bg-gradient-green a.text-light:hover, .bg-gradient-green a.text-light:focus {
-  color: #fff !important; }
-
-.flag {
-  border: 3px solid #01827b; }
-
-footer .dropdown-menu {
-  min-width: inherit; }
-
-.close {
- outline: none !important;}
 
 
  /*
@@ -13151,7 +13097,34 @@ footer .dropdown-menu {
  .hooray-book-overview .special-price > dd > span:first-child {
    text-decoration: line-through;
  }
+/*
+======================================================================================================================
+Footer
+======================================================================================================================
+*/
+footer {
+  z-index: 1010;
+  position: relative;
+  -webkit-box-shadow: 0 -1px 4px 2px rgba(53, 53, 53, 0.3);
+          box-shadow: 0 -1px 4px 2px rgba(53, 53, 53, 0.3);
+  border-top: #01827b 5px solid; }
 
+.bg-gradient-green .dropdown-item:hover, .bg-gradient-green .dropdown-item:focus {
+  color: #fff;
+  text-decoration: none;
+  background-color: #028d8a; }
+
+.bg-gradient-green a.text-light:hover, .bg-gradient-green a.text-light:focus {
+  color: #fff !important; }
+
+.flag {
+  border: 3px solid #01827b; }
+
+footer .dropdown-menu {
+  min-width: inherit; }
+
+.close {
+ outline: none !important;}
 
 </style>
 
@@ -13836,7 +13809,7 @@ function mainSceneShow(){
 	'<p class="pt-2 px-3 mb-0">'+books['b'+currentB].description+'</p>'+
 	'</div>';
 	$('._description-main').html(_descMain);
-  $('.about-book.description').html(_descMain);
+	$('.about-book.description').html(_descMain);
 	
 	//
 	var destiny = "personalization";
@@ -14508,6 +14481,141 @@ function addToCart(){
 </script>
 
 <script>
+  function readCharacterInfo(characterNo){
+    var curB = currentBook();
+    return curB && curB.characters && curB.characters[characterNo-1];
+  }
+
+  function summaryCharacterToHtml(info)
+  {
+    if(!info) return "<h4>Invalid</h4>";
+    var ret = `<h4 class="character-name">${info.name && info.name[1]}<br/>(${info.gender})</h4>`; 
+    if(info.layers){
+      ret += `<span class="character-summary">`;
+      for(var key in info.layers){
+        ret += `${key}: ${info.layers[key].show || "none"}, `;
+      }
+      ret += `</span>`;
+    } 
+
+    return ret;
+  }
+
+  function initSteps(){
+    var clone = $(".steps.step-character:first").clone();
+    
+    for(var i = 1; i <= amountChar; i ++){
+      var step = null;
+      if(i == 1){
+        step = $(".steps.step-character:first");
+      }else{
+        clone = clone.clone();
+        $(clone).attr("data-character-no", i);
+        
+        var order = (i == 2 && "nd") || (i == 3 && "rd") || "th";
+        $(clone).find(".step-title").text(`Personalize your ${i}${order} character`);
+        $(clone).find(".step-number").text(`${i}.`);
+        $(clone).find(".customize-box").remove();
+        $(clone).attr("data-character-no", i);
+
+        step = $(clone).insertBefore($(".steps.step-configuration"));
+      }
+
+      var info = readCharacterInfo(i);
+      if(info){
+        $(step).addClass("saved");
+        $(step).find(".preview-character").attr("src", info && info.src);
+        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
+      }
+    }
+
+    $(".steps.step-configuration .step-number").text(`${i}.`);
+    $(".steps.step-dedication .step-number").text(`${i+1}.`);
+
+    var curB = currentBook();
+    if(curB && curB.language && curB.font_style){
+      $(".steps.step-configuration").addClass("saved");
+      $(".steps.step-configuration .text").text(`Language: ${(curB && curB.language) || ""}, Font-Style: ${(curB && curB.font_style) || ""}`);
+    }
+
+    if(curB && (curB.photo || curB.dedication)){
+      $(".steps.step-dedication").addClass("saved");
+      $(".steps.step-dedication .dedication-photo").attr("src", (curB && curB.photo) || "");
+      $(".steps.step-dedication .dedication-text").text((curB && curB.dedication) || "");
+    }
+  }
+
+  function updateStepData(){
+    for(var i = 1; i <= amountChar; i ++){
+      var step = $(`.steps.step-character[data-character-no=${i}]`);
+      console.log(step)
+      if(!step || step.length === 0) continue;
+
+      var info = readCharacterInfo(i);
+      if(info){
+        $(step).addClass("saved");
+        $(step).find(".preview-character").attr("src", info && info.src);
+        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
+      }else{
+        $(step).removeClass("saved");
+      }
+    }
+
+    var curB = currentBook();
+    $(".steps.step-configuration .text").text(`Language: ${(curB && curB.language) || ""}, Font-Style: ${(curB && curB.font_style) || ""}`);
+
+    $(".steps.step-dedication .dedication-photo").attr("src", (curB && curB.photo) || "");
+    $(".steps.step-dedication .dedication-text").text((curB && curB.dedication) || "");
+  }
+
+  function startEditingStep(type, /*0:character, 1:configuration, 2:dedication*/ characterNo){
+    if(type === 0){
+      $(`.steps.step-character[data-character-no=${characterNo}] .edit-step`).trigger("click");
+    }else if(type === 1){
+      $(`.steps.step-configuration .edit-step`).trigger("click");
+    }else if(type === 2){
+      $(`.steps.step-dedication .edit-step`).trigger("click");
+    }
+  }
+
+  function checkStepsForNextAction()
+  {
+    for(var i = 1; i <= amountChar; i ++){
+      var step = $(`.steps.step-character[data-character-no=${i}]`);
+      if(!step || step.length === 0) continue;
+
+      var info = readCharacterInfo(i);
+      if(info){
+        $(step).addClass("saved");
+        $(step).find(".preview-character").attr("src", info && info.src);
+        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
+      }else{
+        $(step).removeClass("saved");
+        startEditingStep(0, i);
+        return;
+      }
+    }
+
+    var curB = currentBook();
+    if(!curB || !curB.language || !curB.font_style)
+    {
+      startEditingStep(1,0);
+      return;
+    }
+    if(!curB || !curB.photo || !curB.dedication)
+    {
+      startEditingStep(2,0);
+      return;
+    }
+
+    resetBook();
+    // $("#flip-pages-top").closest(".container-top-preview").remove();
+    $("#flip-pages-top").remove();
+    scrollToElement("#final-step", 1000);
+  }
+</script>
+
+<script>
 var currentB = 9;
 var defaultModel = defaultModel['b'+currentB];
 var character_txt = ' Character';
@@ -14730,7 +14838,7 @@ var previewToken = 0;
                         <i class="fas fa-certificate text-purple"></i>
                       </div>
                       <div class="d-flex flex-row align-items-baseline">
-                        <p class="h5 mb-0">Digital version</p>
+                        <p class="h5 mb-0"></p>
                       </div>
                     </div>
                     <h1 class="card-title">The secret broom</h1>
@@ -14780,7 +14888,7 @@ var previewToken = 0;
     <div class="pt-1">    
       <section class="container description text-center mb-3" style="margin-top:3em !important">
         <h5>Personalized book</h5> 
-        <h1 id="personalized-book-title">Diary of Harper</h1> 
+        <h1 id="personalized-book-title">The secret broom</h1> 
         <h5 class="special-edition">Perfect Gift for New Parents</h4> 
         <div class="yotpo-stars-container">
           <span> 
@@ -15307,7 +15415,7 @@ var previewToken = 0;
 		<div class="d-flex flex-lg-row flex-column">
                             <div class="col-lg-5 d-flex flex-sm-row flex-column align-items-center justify-content-center justify-content-xl-between px-0">
                                 <div class="d-flex justify-content-sm-start justify-content-center py-sm-0 py-2 py-xl-0">
-                                <div class="h6 text-center text-light mb-0 mx-3" title="v.20201008204629">&copy; 2020 Materlu</div> 
+                                <div class="h6 text-center text-light mb-0 mx-3" title="v.20201013113527">&copy; 2020 Materlu</div> 
                                 </div>
                                 <div class="d-flex justify-content-sm-end justify-content-center py-xl-0 py-2">
 									<a class="fa-stack mx-lg-3 mx-2" href="https://www.youtube.com/channel/UCKCsaUnaKI6VTt21PQl9qLw" target="_blank">
@@ -15743,6 +15851,8 @@ window.onscroll = function() {
 	checkPrices();
 	completeBook();
 	getCovers( iniGen );
+
+	initSteps();
 </script>
 
 <!-- JS Footer from customization -->
@@ -16299,9 +16409,10 @@ $('._nextStep').on('click', function(e){
 	// addTocurrentBook( dedicatoryObj );
 	// resetBook();
 
-	// // $("#flip-pages-top").closest(".container-top-preview").remove();
-  // $("#flip-pages-top").remove();
-	// scrollToElement(".hooray-final-preview", 1000);
+	// $("#flip-pages-top").closest(".container-top-preview").remove();
+	// $(".book-information-container").css("margin-top", "0");
+	// $("#container_preview").show();
+	// scrollToElement("#container_preview", 1000);
 });
 
 /* JS Ready from preview */
@@ -16311,6 +16422,7 @@ $("body").on("click",".addToCart", function() {
 	}
 
 });
+
 
 $("body").on("click",".edit-step", function() {
   var step = $(this).closest('.steps');
@@ -16339,6 +16451,7 @@ $("body").on("click",".save-step", function() {
 $("body").on("click",".hooray.arrow-down-circle", function() {
   checkStepsForNextAction();
 });
+
 
 $(window).resize(function() {
 	resizeFrame();
@@ -16387,6 +16500,8 @@ $('footer').find(".flag").parent(".dropdown-item").on('click', function(e){
 	}
 	window.location.assign( $(this).attr("href") );
 });
+
+checkStepsForNextAction();
 $("body").on("click",".aceptCookies", function(e) {
   saveSession('cookies','1','local',true);
   $("#modalCookies").remove();
@@ -16398,146 +16513,7 @@ $(document).keyup(function(e) {
     } 
 });
 
-checkStepsForNextAction();
-
     });
-</script>
-
-<script>
-  function readCharacterInfo(characterNo){
-    var curB = currentBook();
-    return curB && curB.characters && curB.characters[characterNo-1];
-  }
-
-  function summaryCharacterToHtml(info)
-  {
-    if(!info) return "<h4>Invalid</h4>";
-    var ret = `<h4 class="character-name">${info.name && info.name[1]}<br/>(${info.gender})</h4>`; 
-    if(info.layers){
-      ret += `<span class="character-summary">`;
-      for(var key in info.layers){
-        ret += `${key}: ${info.layers[key].show || "none"}, `;
-      }
-      ret += `</span>`;
-    } 
-
-    return ret;
-  }
-
-  function initSteps(){
-    var clone = $(".steps.step-character:first").clone();
-    
-    for(var i = 1; i <= amountChar; i ++){
-      var step = null;
-      if(i == 1){
-        step = $(".steps.step-character:first");
-      }else{
-        clone = clone.clone();
-        $(clone).attr("data-character-no", i);
-        
-        var order = (i == 2 && "nd") || (i == 3 && "rd") || "th";
-        $(clone).find(".step-title").text(`Personalize your ${i}${order} character`);
-        $(clone).find(".step-number").text(`${i}.`);
-        $(clone).find(".customize-box").remove();
-        $(clone).attr("data-character-no", i);
-
-        step = $(clone).insertBefore($(".steps.step-configuration"));
-      }
-
-      var info = readCharacterInfo(i);
-      if(info){
-        $(step).addClass("saved");
-        $(step).find(".preview-character").attr("src", info && info.src);
-        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
-      }
-    }
-
-    $(".steps.step-configuration .step-number").text(`${i}.`);
-    $(".steps.step-dedication .step-number").text(`${i+1}.`);
-
-    var curB = currentBook();
-    if(curB && curB.language && curB.font_style){
-      $(".steps.step-configuration").addClass("saved");
-      $(".steps.step-configuration .text").text(`Language: ${(curB && curB.language) || ""}, Font-Style: ${(curB && curB.font_style) || ""}`);
-    }
-
-    if(curB && (curB.photo || curB.dedication)){
-      $(".steps.step-dedication").addClass("saved");
-      $(".steps.step-dedication .dedication-photo").attr("src", (curB && curB.photo) || "");
-      $(".steps.step-dedication .dedication-text").text((curB && curB.dedication) || "");
-    }
-  }
-
-  function updateStepData(){
-    for(var i = 1; i <= amountChar; i ++){
-      var step = $(`.steps.step-character[data-character-no=${i}]`);
-      console.log(step)
-      if(!step || step.length === 0) continue;
-
-      var info = readCharacterInfo(i);
-      if(info){
-        $(step).addClass("saved");
-        $(step).find(".preview-character").attr("src", info && info.src);
-        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
-      }else{
-        $(step).removeClass("saved");
-      }
-    }
-
-    var curB = currentBook();
-    $(".steps.step-configuration .text").text(`Language: ${(curB && curB.language) || ""}, Font-Style: ${(curB && curB.font_style) || ""}`);
-
-    $(".steps.step-dedication .dedication-photo").attr("src", (curB && curB.photo) || "");
-    $(".steps.step-dedication .dedication-text").text((curB && curB.dedication) || "");
-  }
-
-  function startEditingStep(type, /*0:character, 1:configuration, 2:dedication*/ characterNo){
-    if(type === 0){
-      $(`.steps.step-character[data-character-no=${characterNo}] .edit-step`).trigger("click");
-    }else if(type === 1){
-      $(`.steps.step-configuration .edit-step`).trigger("click");
-    }else if(type === 2){
-      $(`.steps.step-dedication .edit-step`).trigger("click");
-    }
-  }
-
-  function checkStepsForNextAction()
-  {
-    for(var i = 1; i <= amountChar; i ++){
-      var step = $(`.steps.step-character[data-character-no=${i}]`);
-      if(!step || step.length === 0) continue;
-
-      var info = readCharacterInfo(i);
-      if(info){
-        $(step).addClass("saved");
-        $(step).find(".preview-character").attr("src", info && info.src);
-        $(step).find(".character-summary").html(summaryCharacterToHtml(info));
-      }else{
-        $(step).removeClass("saved");
-        startEditingStep(0, i);
-        return;
-      }
-    }
-
-    var curB = currentBook();
-    if(!curB || !curB.language || !curB.font_style)
-    {
-      startEditingStep(1,0);
-      return;
-    }
-    if(!curB || !curB.photo || !curB.dedication)
-    {
-      startEditingStep(2,0);
-      return;
-    }
-
-    resetBook();
-    // $("#flip-pages-top").closest(".container-top-preview").remove();
-    $("#flip-pages-top").remove();
-    scrollToElement("#final-step", 1000);
-  }
-
-  initSteps();
 </script>
 </body>
 </html>

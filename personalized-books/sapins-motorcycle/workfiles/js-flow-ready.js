@@ -273,18 +273,18 @@ $('.nextStep').on('click', function(e){
 });
 
 $('._nextStep').on('click', function(e){
-	e.preventDefault();
-	// if( checkcurrentBook().rc==0 || imgData != "") {
-	// 	window.location.href = "==(MAT_url_preview)==";
-	// }        
-	var dedicatoryObj = {"dedication": $('#dedicatory').val(), "photo": imgData };
-	addTocurrentBook( dedicatoryObj );
-	resetBook();
+	// e.preventDefault();
+	// // if( checkcurrentBook().rc==0 || imgData != "") {
+	// // 	window.location.href = "==(MAT_url_preview)==";
+	// // }        
+	// var dedicatoryObj = {"dedication": $('#dedicatory').val(), "photo": imgData };
+	// addTocurrentBook( dedicatoryObj );
+	// resetBook();
 
-	$("#flip-pages-top").closest(".container-top-preview").remove();
-	$(".book-information-container").css("margin-top", "0");
-	$("#container_preview").show();
-	scrollToElement("#container_preview", 1000);
+	// $("#flip-pages-top").closest(".container-top-preview").remove();
+	// $(".book-information-container").css("margin-top", "0");
+	// $("#container_preview").show();
+	// scrollToElement("#container_preview", 1000);
 });
 
 /* JS Ready from preview */
@@ -293,6 +293,35 @@ $("body").on("click",".addToCart", function() {
 		window.location.assign("/==(language)==/==(MAT_url_cart)==");
 	}
 
+});
+
+
+$("body").on("click",".edit-step", function() {
+  var step = $(this).closest('.steps');
+  $(".steps").removeClass("editing");
+
+  $(step).addClass("editing");
+  scrollToElement(step, 1000);
+});
+
+$("body").on("click",".save-step", function() {
+  var step = $(this).closest('.steps');
+  $(step).closest('.steps').removeClass("editing");
+  $(step).closest('.steps').addClass("saved");
+
+  if(step.hasClass('step-dedication')){
+    var dedicatoryObj = {"dedication": $('#dedicatory').val(), "photo": imgData };
+    addTocurrentBook( dedicatoryObj );
+  }else if(step.hasClass('step-configuration')){
+  }else{ // character
+
+  }
+  updateStepData();
+  checkStepsForNextAction();
+});
+
+$("body").on("click",".hooray.arrow-down-circle", function() {
+  checkStepsForNextAction();
 });
 
 
@@ -317,7 +346,7 @@ $('#dropdown').on('change', function(e){
 	if( lastLang != lang ){
 		var dedicatoryObj = { "language":lang };
 		var result = addTocurrentBook( dedicatoryObj );
-		resetBook();
+		// resetBook();
 	}
 });
 $("[name='LetterType']").on('click', function(e){
@@ -329,7 +358,7 @@ $("[name='LetterType']").on('click', function(e){
 	var dedicatoryObj = { "font_style": lettertype }
 	var result = addTocurrentBook( dedicatoryObj );
 	if( lastType != lettertype ){
-		resetBook();
+		// resetBook();
 	}
 });
 $('footer').find(".flag").parent(".dropdown-item").on('click', function(e){
@@ -343,3 +372,5 @@ $('footer').find(".flag").parent(".dropdown-item").on('click', function(e){
 	}
 	window.location.assign( $(this).attr("href") );
 });
+
+checkStepsForNextAction();

@@ -2,21 +2,6 @@
 .main-container {
   min-height: calc(100vh - 65px); }
 
-.bg-gradient-light-story-page {
-  background: linear-gradient(-20deg, #fbfcdb 0%, #e9defa 50%, #fbfcdb 100%) !important; }
-
-.bg-img {
-  background-image: url(==(MAT_cdn)==img/bg-img/forma3rosa.png);
-  background-repeat: no-repeat; }
-
-.bg-img2 {
-  background-image: url(==(MAT_cdn)==img/bg-img/forma5b.png);
-  background-repeat: no-repeat; }
-
-.bg-img3 {
-  background-image: url(==(MAT_cdn)==img/bg-img/forma4rosa2-inverse.png);
-  background-repeat: no-repeat; }
-
 @media (max-width: 575.98px) {
   .bg-img {
     background-position: 20vw -5vh; }
@@ -98,10 +83,6 @@
 .book-information-container {
   margin-top: -15vh;
   min-height: 70vh; }
-
-.other-books-container {
-  -webkit-box-shadow: inset 0px 5px 0px 0px #4b95eb, 0px -3px 8px 1px rgba(0, 0, 0, 0.31);
-          box-shadow: inset 0px 5px 0px 0px #4b95eb, 0px -3px 8px 1px rgba(0, 0, 0, 0.31); }
 
 .carouselOurBooks .cardbook {
   border-width: 0 !important;
@@ -260,9 +241,6 @@
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
     display: inline-flex; }
-
-.img-container {
-  background-image: url(==(MAT_cdn)==img/bg-img/bg-our-stories.svg); }
 
 @media (max-width: 575.98px) {
   .img-container {
@@ -845,11 +823,11 @@ user-select: none;
       width: 50px; } }
   .customization-btn.flex-row .line {
     background: -webkit-gradient(linear, left top, right top, from(#fff), to(rgba(255, 255, 255, 0)));
-    background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0));
+    background: linear-gradient(90deg, #333, rgba(255, 255, 255, 0));
     margin-left: -2px; }
   .customization-btn.flex-row-reverse .line {
     background: -webkit-gradient(linear, right top, left top, from(#fff), to(rgba(255, 255, 255, 0)));
-    background: linear-gradient(-90deg, #fff, rgba(255, 255, 255, 0));
+    background: linear-gradient(-90deg, #333, rgba(255, 255, 255, 0));
     margin-right: -2px; }
 
 .customization-dot {
@@ -1379,31 +1357,6 @@ i.fas.fa-camera-retro {
   display: -ms-flexbox;
   display: flex; }
 
-.character-layers {
-  margin-left: -12%;
-  left: 0; }
-
-@media (max-width: 575.98px) {
-  .character-layers {
-    margin-left: -20%;
-    height: 130%; } }
-
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .character-layers {
-    height: 150%; } }
-
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .character-layers {
-    height: 100%; } }
-
-@media (min-width: 992px) and (max-width: 1199.98px) {
-  .character-layers {
-    height: 105%; } }
-
-@media (min-width: 1200px) {
-  .character-layers {
-    height: 135%; } }
-
 .bg-gradient-translucid {
   background-image: -webkit-gradient(linear, left bottom, left top, from(#09203f), to(rgba(83, 120, 149, 0.05)));
   background-image: linear-gradient(to top, #09203f 0%, rgba(83, 120, 149, 0.05) 100%); }
@@ -1488,7 +1441,7 @@ i.fas.fa-camera-retro {
 .turn-page-help svg {
   height: 50px; }
   .turn-page-help svg path {
-    fill: #fff; }
+    fill: #333; }
 
 @media (min-width: 768px) {
   .turn-page-help {
@@ -1629,7 +1582,7 @@ cursor: wait!important;}
 .turn-page-help svg {
   height: 50px; }
   .turn-page-help svg path {
-    fill: #fff; }
+    fill: #333; }
 
 @media (min-width: 768px) {
   .turn-page-help {
@@ -1709,3 +1662,401 @@ cursor: wait!important;}
 
 .pagesLoaded{
 opacity: 1;}
+
+
+ /*
+ ==== CUSTOMIZED CSS From Hooray
+ */
+ .hooray-separte-bar {
+   color: gray;
+   opacity: 0.5;
+ }
+
+ .hooray-text-highlight {
+   color: #f9588a;
+ }
+
+ .hooray-ancho-more-information {
+   position: absolute;width: 50%;height: 100px;cursor: pointer;margin-left: 25%;
+ }
+
+ .hooray-ancho-more-information img {
+   object-fit: cover;width: 100%;height: 100%;
+ }
+
+ .hooray.container {
+   width:1170px;margin-left:auto;margin-right:auto;position:relative;z-index:10
+ }
+
+ .hooray-book-info {
+    margin-top: 120px !important;
+    background-image: url(https://cdn.hoorayheroes.com/static/assets/web/images/shadows/separator-large.png);
+    background-size: 100%;
+    margin: 0 auto 25px;    
+    background-color: #fbfbfb;z-index: 2;
+    background-repeat: no-repeat;
+    background-position: bottom;
+ }
+ .hooray-book-info .counters {
+    background-image: url(https://cdn.hoorayheroes.com/static/assets/web/images/shadows/separator-large.png);
+    background-size: 100%;
+    display:flex;
+    position:relative;
+    margin:0 auto 15px;
+    padding-top:3rem;
+    background-repeat:no-repeat;
+    background-position:top;
+    justify-content: center;
+    margin-bottom: 3rem !important;
+ }
+
+ .hooray-book-info .counters a span {
+    border-radius: 100px;
+    height: 20px;
+    margin-right: 5px;
+    background-color: #e5e5e5;
+    font-size: 12px;
+    text-align: center;
+    padding: 6px 15px 5px;
+ }
+
+ .hooray-book-info .counters a:hover span {
+   background-color: #59c;
+   color: white;
+ }
+
+ .hooray-book-info .counters a {
+    position: relative;
+    z-index: 1;
+    background-color: #fbfbfb;
+    color: #5e6977;
+    font-size: 15px;
+    font-weight: 700;
+ }
+
+ .hooray-book-info .additional-info {
+   margin-left: 25%;
+ }
+
+ .hooray-book-info .additional-info dl {
+   display: flex;
+   flex-direction: row;
+ }
+
+ .hooray-book-info .additional-info dt {
+   color: #999;
+ }
+ .hooray-book-info .additional-info dd {
+    margin-left: 6px;
+    color: #5e6977;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    font-weight: 600;
+ }
+ .hooray-book-info .special-price {
+   width: 100%;
+   justify-content: center !important;
+   font-size: 1.3rem;
+ }
+
+ .hooray-book-info .special-price > dd > span:first-child {
+   text-decoration: line-through;
+ }
+
+ .hooray.arrow-down-circle {
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: -25px !important;
+    right: 0;
+    left: 0;
+    background: #f9588a;
+    cursor: pointer;
+    z-index: 2;
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    justify-content: center;
+ }
+
+  .hooray.arrow-down-circle i {
+    speak: none;
+    font-style: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    top: 0;
+    left: 0;
+    -webkit-font-smoothing: antialiased;
+    font-size: 60px;
+    width: 60px;
+    text-align: center;
+    color: white;
+  }
+
+  .hooray-book-features dl{
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left: 100px;
+  }
+
+  .hooray-book-create {
+    z-index: 2;
+  }
+  
+ .hooray-book-create > section {
+    background-image: url(https://cdn.hoorayheroes.com/static/assets/web/images/shadows/separator-large.png);
+    background-size: 100%;
+    margin: 0 auto 25px;    
+    z-index: 2;
+    background-repeat: no-repeat;
+    background-position: top;
+    padding: 0px;
+    padding-top: 45px !important;
+    background-color: #f9f9f9;
+ }
+
+ .hooray-book-create .container .steps:first-child {
+   background-image: none;
+   padding-top: 18px;
+ }
+
+ .hooray-book-create .container .steps .save-step {
+   z-index: 2;
+ }
+
+ .hooray-book-create .container .steps {
+    background: #fff url(https://cdn.hoorayheroes.com/static/assets/web/images/shadows/step-large.png) no-repeat;
+    background-size: 300%;
+    padding-bottom: 18px;
+    padding-top: 28px;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    margin: 0 auto;
+    background-position: 0 0;
+ }
+
+ .hooray-book-create .container .steps {
+    background-color: #f9f9f9;
+ }
+ .hooray-book-create .container .steps.editing {
+   background-color: white;
+ }
+
+ .hooray-book-create .steps > .step-header {
+   padding: 0 30px;
+   line-height: 48px;
+   transition: margin .2s linear;
+   display: flex;
+   align-items:center;
+   position: relative;
+ }
+
+ .hooray-book-create .steps > .step-header > span {
+    font-size: 54px;
+    left: 20px;
+    position: relative;
+    color: #eee;
+    font-weight: 900;
+    margin-right: 5px;
+ }
+
+ .hooray-book-create .steps > .step-header > h3 {
+    font-size: 24px;
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    color: #a5a5a5;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.2;
+ }
+
+ .hooray-book-create .steps > .step-header > a {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    color: #f9588a;
+    font-weight: 400;
+    text-transform: none;
+ }
+
+ .hooray-book-create .steps > .step-footer > .saved {
+   padding: 30px;
+   display: flex;
+   flex-direction: row;
+   justify-content: center;
+ }
+ .hooray-book-create .steps > .step-footer .character-summary {
+    min-width: 200px;
+    max-width: 300px;
+ }
+ .hooray-book-create .steps > .step-footer > .saved img {
+   /* max-width: 100px; */
+   max-height: 100px;
+   margin-right: 30px;
+   object-fit: contain
+ }
+
+ .hooray-book-create .steps.step-dedication > .step-footer .dedication-summary {
+   display:flex;
+   flex-direction: column;
+   justify-content: center;
+ }
+
+ .hooray-book-create .steps.step-dedication > .step-footer .dedication-summary .dedication-text {
+   min-width: 200px;
+   max-width: 600px;
+ }
+
+ .hooray-book-create .steps > .step-footer .editing {
+   display: none;
+ }
+ .hooray-book-create .steps.editing > .step-footer .editing {
+   display: block;
+ }
+ .hooray-book-create .steps > .step-header .edit-step {
+   display: block;
+ }
+ .hooray-book-create .steps.saved > .step-header .edit-step {
+   display: block;
+ }
+ .hooray-book-create .steps.editing > .step-header .edit-step {
+   display: none;
+ }
+ .hooray-book-create .steps > .step-footer .saved {
+   display: none;
+ }
+ .hooray-book-create .steps.saved > .step-footer .saved {
+   display: flex;
+ }
+ .hooray-book-create .steps.editing > .step-footer .saved {
+   display: none;
+ }
+
+ .hooray-final-preview {
+    background: #fff url(https://cdn.hoorayheroes.com/static/assets/web/images/shadows/step-large.png) no-repeat;
+    background-size: 300%;
+    padding-bottom: 18px;
+    padding-top: 28px;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    margin: 0 auto;
+    background-position: 0 0;
+ }
+ .hooray-final-preview h1 {
+   font-size: 24px;
+   color: #f9588a;
+   text-align: center;
+   text-transform: uppercase;
+   margin-bottom: 15px;
+   display: block;
+   font-weight: 400;
+   width: 100%;
+   max-width: 480px;
+   margin: 0 auto;
+   line-height: 1.4;
+   padding: 10px 15px;
+ }
+ .hooray-final-preview h2 {
+   font-size: 20px;
+   color: #f9588a;
+   text-align: center;
+   text-transform: uppercase;
+   margin-bottom: 5px;
+   display: block;
+   font-weight: 400;
+   width: 100%;
+   max-width: 480px;
+   margin: 0 auto;
+   line-height: 1.4;
+   padding: 0 15px;
+ }
+
+ .hooray-book-overview {
+    z-index: 2;
+ }
+
+ .hooray-book-overview .container {
+    background-image: url(https://cdn.hoorayheroes.com/static/assets/web/images/shadows/separator-large.png);
+    background-size: 100%;
+    z-index: 2;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-color: #f9f9f9;
+    padding-bottom: 3rem;
+ }
+
+ .hooray-book-overview .container .badges {
+    background-image: url(https://cdn.hoorayheroes.com/static/assets/web/images/shadows/separator-large.png);
+    background-size: 100%;
+    display:flex;
+    position:relative;
+    margin:0 auto 15px;
+    background-repeat:no-repeat;
+    background-position:top;
+    justify-content: center;
+ }
+
+ .hooray-book-overview .container .badges ul {
+   color: #a9a9a9;
+   text-align: center;
+   text-transform: uppercase;
+   padding: 40px 0 20px;
+   margin: 0 auto;
+   width: 100%;
+   justify-content: space-between;
+ }
+
+ .hooray-book-overview .badges h3 {
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 120px;
+    text-align: center;
+ }
+ 
+ .hooray-book-overview .badges h3 > span:first-child {
+   font-size: 80px;
+ }
+
+ .hooray-book-overview .container > div {
+   margin-left: 15%;
+   width : 70%;
+ }
+
+ .hooray-book-overview .price-info dl {
+   display: flex;
+   flex-direction: row;
+ }
+
+ .hooray-book-overview .price-info dt {
+   color: #999;
+   width: 200px;
+ }
+ .hooray-book-overview .price-info dd {
+    margin-left: 6px;
+    color: #5e6977;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    font-weight: 600;
+ }
+ .hooray-book-overview .price-info dl {
+   width: 50%;
+   margin-left: 25%;
+   font-size: 1.3rem;
+ }
+
+ .hooray-book-overview .special-price > dd > span:first-child {
+   text-decoration: line-through;
+ }

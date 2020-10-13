@@ -6,6 +6,8 @@
 	checkPrices();
 	completeBook();
 	getCovers( iniGen );
+
+	initSteps();
 </script>
 
 <!-- JS Footer from customization -->
