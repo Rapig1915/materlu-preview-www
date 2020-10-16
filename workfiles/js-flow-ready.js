@@ -100,54 +100,6 @@ $("body").on("click",".saveChar", function() {
 	    }
 	}	
 });
-$("body").on( "change", "#character_name", function() {
-	var name = $("#character_name").val();
-	saveNameChar(name);
-});
-$("body").off("click",".runProp");
-$("body").on("click",".runProp", function() {
-	// addToCurrentChar(gender,name,layer,type,jsonItem)
-	// $("body").addClass("wait");
-	var type = $(this).attr("data-type");
-	var item = {
-		"gender":		 currentGenderChar,
-		"gender_origin": currentGender,
-		"name": 		 $("#character_name").val(),
-		"layer":		 $(this).attr("data-layer"),
-		"type":			 type,
-		"jsonItem": 	 {}
-	};
-	if( type == "color" ){
-		item.jsonItem = {
-			"target":	 $(this).attr("data-target"),
-			"fill":		 $(this).attr("data-fill"),
-			"stroke":	 $(this).attr("data-stroke")
-		}
-	}else{
-		item.jsonItem = $(this).attr("data-target");
-	}
-	selectOption(item);
-});
-$("body").on("click",".left", function() {
-	//var elements = $(this).siblings(".customization-slides-container").find("li").length;
-	//var container = $(this).siblings(".customization-slides-container").find("ul").css("width").replace("px","")*1;
-	var size = ($(this).siblings(".customization-slides-container").find("li").css("width").replace("px","")*1)+($(this).siblings(".customization-slides-container").find("li").css("margin-left").replace("px","")*2);
-	var position = $(this).siblings(".customization-slides-container").find("ul").css("margin-left").replace("px","")/size;
-	var num = size*(position+2);
-	if( num > 0 ) num = 0;
-	$(this).siblings(".customization-slides-container").find("ul").css("margin-left",num+"px");
-});
-$("body").on("click",".right", function() {
-	var elements = $(this).siblings(".customization-slides-container").find("li").length;
-	var container = $(this).siblings(".customization-slides-container").find("ul").css("width").replace("px","")*1;
-	var size = ($(this).siblings(".customization-slides-container").find("li").css("width").replace("px","")*1)+($(this).siblings(".customization-slides-container").find("li").css("margin-left").replace("px","")*2);
-	var amount = container/size;
-	var position = $(this).siblings(".customization-slides-container").find("ul").css("margin-left").replace("px","")/size;
-	var limite = (elements-(container/size))*size*-1;
-	var num = size*(position-2);
-	if( num < limite ) num = limite;
-	$(this).siblings(".customization-slides-container").find("ul").css("margin-left",num+"px");
-});
 window.onbeforeunload = function(e) {
 	if( currentCharToCustom != 0 && currentBook().characters != undefined ){
 		var currentC = currentBook().characters[0];
@@ -173,70 +125,6 @@ $("body").on("click",".deleteChar", function() {
 	$(this).parent().parent().remove();
 	delCharacters(id,target);
 });
-
-$("body").on( "click", ".charsBreadc", function() {
-	
-	$(".breadcrumb-selected").addClass("d-none");
-	$(this).find(".breadcrumb-selected").removeClass("d-none");
-	
-	var id = $(this).attr("data-id");
-	try {
-		currentC = currentBook().characters[id];
-		currentCharToCustom = id;
-		currentCharID = books["b"+currentB].characters[id].id;
-		
-		currentGender = currentC.gender_origin;
-		currentGenderChar = currentC.gender;
-		
-		currentC.name = currentC.name[1];
-		newChar(currentC);
-		setLayers();
-		drawModel();
-		
-		$("#character_name").val(currentC.name);
-		
-		if( currentGender == "chica"){
-			setChica();	
-		}else{
-			setChico();	
-		}
-		selectCurrentControls();
-		drawSaved();
-	}catch(e){
-		console.log("Not found");
-	}
-	
-});
-
-/* NEW FOR LAYERS */
-$("body").on( "click", "#girl", function() {
-	setChica();
-});
-$("body").on( "click", "#boy", function() {
-	setChico();
-});
-$("body").on("click",".customization-btn", function(e) {
-	$(".collapse").removeClass("show");
-	//$('.collapse').collapse('hide');
-	var target = $(this).attr("data-target");
-	$(".customization-dot").removeClass("d-none");
-	$(".customization-dot-title").addClass("d-none");  
-	$(this).find(".customization-dot").addClass("d-none");
-	$(this).find(".customization-dot-title").removeClass("d-none");   
-});
-$('.carouselAccesories').slick({
-	dots: false,
-	infinite: true,
-	autoplay: false,
-	fade: true,
-	cssEase: 'linear',
-	slidesToShow: 1,
-	slidesToScroll: 1
-});
-
-$('#Accesories').on('shown.bs.collapse', function (e) {
-	$(".carouselAccesories").slick('setPosition');
-})
 
 /* JS Ready from dedication */
 $('body').on('click','.useIdea',function(e){
@@ -306,16 +194,22 @@ $("body").on("click",".edit-step", function() {
 
 $("body").on("click",".save-step", function() {
   var step = $(this).closest('.steps');
-  $(step).closest('.steps').removeClass("editing");
-  $(step).closest('.steps').addClass("saved");
 
   if(step.hasClass('step-dedication')){
     var dedicatoryObj = {"dedication": $('#dedicatory').val(), "photo": imgData };
     addTocurrentBook( dedicatoryObj );
   }else if(step.hasClass('step-configuration')){
   }else{ // character
-
+         if ($('input[name="character_name"]').val() == "") {
+//show validation error
+		return;
+	}
+        endCharacter();
   }
+
+  $(step).closest('.steps').removeClass("editing");
+  $(step).closest('.steps').addClass("saved");
+
   updateStepData();
   checkStepsForNextAction();
 });
@@ -373,4 +267,129 @@ $('footer').find(".flag").parent(".dropdown-item").on('click', function(e){
 	window.location.assign( $(this).attr("href") );
 });
 
-checkStepsForNextAction();
+//checkStepsForNextAction();
+
+/* Customization box */
+$("body").on("click", ".genderBoy", function () {
+	$('.genderBoy').each(function(index, item) {
+		if (!$(item).prop('checked')) {
+			$(item).prop('checked', true);
+		}
+	});
+	selectGender("chico");
+	changeLayersGroupVisibility("pelo");
+	showSelectedItem("pelo");
+});
+$("body").on("click", ".genderGirl", function () {
+	$('.genderGirl').each(function(index, item) {
+		if (!$(item).prop('checked')) {
+			$(item).prop('checked', true);
+		}
+	});
+	selectGender("chica");
+	changeLayersGroupVisibility("pelo");
+	showSelectedItem("pelo");
+});
+
+$("body").on("click", ".runProp", function () {
+	// addToCurrentChar(gender,name,layer,type,jsonItem)
+	//$("body").addClass("wait");
+	var type = $(this).attr("data-type");
+	let cChar = currentChar();
+	var item = {
+		"gender": cChar.gender,
+		"gender_origin": cChar.gender_origin,
+		"name": $('input[name="character_name"]').val(),
+		"layer": $(this).attr("data-layer"),
+		"type": type,
+		"jsonItem": {}
+	};
+	if (type == "color") {
+		item.jsonItem = {
+			"target": $(this).attr("data-target"),
+			"fill": $(this).attr("data-fill"),
+			"stroke": $(this).attr("data-stroke")
+		}
+	} else {
+		item.jsonItem = $(this).attr("data-target");
+		if ($(this).attr("data-fill")) {
+			var colorItem = Object.assign({}, item);
+			colorItem.jsonItem = {
+				"target": $(this).attr("data-color-target"),
+				"fill": $(this).attr("data-fill"),
+				"stroke": $(this).attr("data-stroke")
+			}
+			colorItem.type = "color";
+			selectOption(colorItem);
+		}
+	}
+	selectOption(item);
+	if (type == "color") {
+		let extension = Modernizr.webp ? "webp" : "png";
+		let show = cChar.layers[item.layer].show;
+		buildImagesSelector(jsonData, currentCharToCustom, $(this).attr("data-layer"), cChar.gender_origin, show, $(this).attr("data-fill"), $(this).attr("data-stroke"), extension, $(this).attr("data-layer") == "pendientes");
+	}
+	$("body").removeClass("wait");
+});
+
+//--<< end of it
+//select options	
+$(".left").on("click", function () {
+	var container = $(this).siblings(".customization-slides-container").find("ul");
+	var size = ($(this).siblings(".customization-slides-container").find("li").css("width").replace("px", "") * 1) + ($(this).siblings(".customization-slides-container").find("li").css("margin-left").replace("px", "") * 2);
+	var currentOffset = container.scrollLeft();
+	container.finish().animate({ scrollLeft: currentOffset - size }, 200);
+});
+$(".right").on("click", function () {
+	var container = $(this).siblings(".customization-slides-container").find("ul");
+	var size = ($(this).siblings(".customization-slides-container").find("li").css("width").replace("px", "") * 1) + ($(this).siblings(".customization-slides-container").find("li").css("margin-left").replace("px", "") * 2);
+	var currentOffset = container.scrollLeft();
+	container.finish().animate({ scrollLeft: currentOffset + size }, 200);
+});
+
+//script to see the front-end of the different steps -- Could be removed later
+$('#create_story_customized_form').submit(function (evt) {
+	evt.preventDefault();
+});
+
+$("body").on("change", ".Character_name", function () {
+	var name = $(".Character_name").val();
+	saveNameChar(name);
+});
+
+$("body").on("click", ".customization-btn", function (e) {
+	var target = $(this).attr("data-target");
+	changeLayersGroupVisibility(target);
+	showSelectedItem(target);
+});
+
+$.ajax({
+	// la URL para la petición
+	url: '++(DOMAIN)++/==(language)==/assets/' + currentB + '.json',
+	type: 'GET',
+	dataType: 'json',
+	success: function (json) {
+		jsonData = json;
+		Modernizr.on("webp", function (result) {
+			currentCharToCustom = 0;
+			buildAllElements(currentCharToCustom);
+			checkStepsForNextAction();
+		});		
+	},
+	error: function (xhr, status) {
+		console.error("Unable to get book JSON");
+	}
+});
+
+$("body").on("click",".step-character .edit-step", function() {
+	var step = $(this).closest('.steps');
+
+	var info = readCharacterInfo(step.attr('data-character-no'));
+	if (step.attr('data-character-no') - 1 != currentCharToCustom || !info)  {	
+		currentCharToCustom = step.attr('data-character-no') - 1;
+		$('.customize-box').detach().appendTo(step.find('.editing'));			
+		buildAllElements(currentCharToCustom);
+	} else {
+		showSelectedItem("pelo");
+	}
+});
