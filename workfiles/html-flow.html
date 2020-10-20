@@ -28,7 +28,7 @@
                       </div>
                     </div>
                     <h1 class="card-title"><<(materbooks.data.==(language)==[?].title)>></h1>
-                    <div class="d-flex flex-row card-text price checkPrice" data-id="9">
+                    <div class="d-flex flex-row card-text price checkPrice" data-id="<<(materbooks.data.==(language)==[?].id)>>">
                       <div class="discount-badge onlyDiscount">
                         <span><<(materbooks.data.==(language)==[?].discount)>></span>
                         <i class="fas fa-certificate text-purple"></i>
@@ -102,12 +102,17 @@
             <div class="container h5 text-teal mb-2 text-center d-none">==(MAT_check_out_this_sample)==</div>
             <div class="d-flex flex-column">
               <div class="d-flex flex-column align-items-center justify-content-center position-relative">
-                <div id="flip-pages-top" class="pages-top pages shadow mt-3">
-                  <div class="singlePage previewPage hard" id="page1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="9" alt="<<(materbooks.data.==(language)==[?].title)>>"></div>
-                </div>
-                <div class="turn-page-help d-flex flex-row align-self-end">
-                  <p class="text-center text-dark">==(MAT_txt_preview_p1)==</p>
-                  <svg viewBox="0 0 47.6 74.2"><g><path d="M8.3,7.6c4.2,0,8.4,0.9,12.2,2.6c3.8,1.6,7.3,4,10.3,7c5.8,5.9,9.2,14.2,9,22.5c-0.1,8.3-3.5,16.4-9.4,22.1 c-5.8,5.8-14,9-22.1,8.9c8.1-0.1,16.1-3.5,21.7-9.3c5.7-5.7,8.9-13.7,8.8-21.7c-0.1-8-3.4-15.9-9.1-21.4C24,12.6,16.2,9.5,8.3,9.6 V7.6z"/><path d="M25.3,3.6L21,4.8c-1.4,0.4-2.8,0.8-4.2,1.3c-1.4,0.4-2.8,0.9-4.1,1.5C11.3,8,10,8.7,8.8,9.4l0-1.6c1,0.7,2,1.5,2.9,2.3 c0.9,0.8,1.8,1.7,2.6,2.6c0.8,0.9,1.6,1.8,2.2,2.8c0.7,1,1.3,2,1.8,3.1c-0.8-0.9-1.6-1.7-2.5-2.5c-0.8-0.8-1.7-1.6-2.6-2.4 c-0.9-0.8-1.8-1.5-2.7-2.2c-0.9-0.7-1.9-1.4-2.8-2L6.5,8.6l1.2-0.8c1.3-0.9,2.7-1.5,4.2-2.1c1.4-0.6,2.9-0.9,4.4-1.3 c1.5-0.3,3-0.5,4.5-0.7C22.3,3.6,23.8,3.5,25.3,3.6z"/></g></svg>
+                <div class="book_wrapper">
+                  <a id="next_page_button_sample" class="next_page_button"></a>
+                  <a id="prev_page_button_sample" class="prev_page_button"></a>
+                  <div id="loading_sample" class="loading">Loading pages...</div>
+                  <div id="mybook_sample" style="display:none;">
+                    <div class="b-load">
+                      <div class="hard">
+                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="getCovers" data-id="<<(materbooks.data.==(language)==[?].id)>>"/>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div> 
@@ -839,23 +844,18 @@
                   <h2>The book “Diary of Harper” is ready for your shelf. <br>Click through it below.</h2>
               
                   <div class="d-flex flex-column align-items-center justify-content-center position-relative">
-                      <div id="flip-pages-preview" class="pages-preview pages shadow mt-3">
-                        <div class="singlePage previewPage hard" id="page1"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="img-fluid getCovers" data-id="9" alt="<<(materbooks.data.==(language)==[?].title)>>"></div>
+                    <div class="book_wrapper">
+                      <a id="next_page_button_preview" class="next_page_button"></a>
+                      <a id="prev_page_button_preview" class="prev_page_button"></a>
+                      <div id="loading_preview" class="loading">Loading pages...</div>
+                      <div id="mybook_preview" style="display:none;">
+                        <div class="b-load">
+                          <div class="hard">
+                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="getCovers" data-id="<<(materbooks.data.==(language)==[?].id)>>"/>
+                          </div>
+                        </div>
                       </div>
-                      <div class="turn-page-help d-flex flex-row align-self-end">
-                          <p class="text-center text-white">==(MAT_txt_preview_p1)==</p>
-                          <svg viewBox="0 0 47.6 74.2">
-                              <g>
-                                  <path d="M8.3,7.6c4.2,0,8.4,0.9,12.2,2.6c3.8,1.6,7.3,4,10.3,7c5.8,5.9,9.2,14.2,9,22.5c-0.1,8.3-3.5,16.4-9.4,22.1
-                                      c-5.8,5.8-14,9-22.1,8.9c8.1-0.1,16.1-3.5,21.7-9.3c5.7-5.7,8.9-13.7,8.8-21.7c-0.1-8-3.4-15.9-9.1-21.4C24,12.6,16.2,9.5,8.3,9.6
-                                      V7.6z"/>
-                                  <path d="M25.3,3.6L21,4.8c-1.4,0.4-2.8,0.8-4.2,1.3c-1.4,0.4-2.8,0.9-4.1,1.5C11.3,8,10,8.7,8.8,9.4l0-1.6c1,0.7,2,1.5,2.9,2.3
-                                      c0.9,0.8,1.8,1.7,2.6,2.6c0.8,0.9,1.6,1.8,2.2,2.8c0.7,1,1.3,2,1.8,3.1c-0.8-0.9-1.6-1.7-2.5-2.5c-0.8-0.8-1.7-1.6-2.6-2.4
-                                      c-0.9-0.8-1.8-1.5-2.7-2.2c-0.9-0.7-1.9-1.4-2.8-2L6.5,8.6l1.2-0.8c1.3-0.9,2.7-1.5,4.2-2.1c1.4-0.6,2.9-0.9,4.4-1.3
-                                      c1.5-0.3,3-0.5,4.5-0.7C22.3,3.6,23.8,3.5,25.3,3.6z"/>
-                              </g>
-                          </svg>                       
-                      </div>
+                    </div>
                   </div>
                 </div> 
               </section>

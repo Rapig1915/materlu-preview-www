@@ -237,19 +237,24 @@
 		if(page > 1) index = page + 1;
 		//console.log("** CHECKPAGES: " + page +","+index);
 		//console.log(currentP['page'+index]);
-		if(sample)
-		  $(".pages-top").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
-		else
-		  $(".pages-preview").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
+		// if(sample)
+		//   $(".pages-top").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
+		// else
+		//   $(".pages-preview").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+currentP['page'+index]+'" class="img-fluid"><div class="gradient"></div></div>', page);
 	}
 	function addPages(page,file,sample=0){
+		if(sample)
+		  $(`#mybook_sample div[page-no="${page}"] img`).attr("src", "https://admin.materlu.com"+file);
+		else
+		  $(`#mybook_preview div[page-no="${page}"] img`).attr("src", "https://admin.materlu.com"+file);
+
 		var index = page;
 		if(page > 1) index = page + 1;
 		if( isMobile.any() == null ){
-			if(sample)
-			  $(".pages-top").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
-			else
-			  $(".pages-preview").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
+			// if(sample)
+			//   $(".pages-top").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
+			// else
+			//   $(".pages-preview").turn('addPage', '<div class="singlePage previewPage" id="page'+index+'"><img src="https://admin.materlu.com'+file+'" class="img-fluid"><div class="gradient"></div></div>', page);
 		
 		}else{
 			$("#modal-page"+page).find("img").attr("src",'https://admin.materlu.com'+file);
@@ -499,32 +504,8 @@
 	function resetBook(){
 		console.log("RESETBOOK");
 		setcurrentPreview();
-		$("#flip-pages-preview").turn("destroy");
-		$(".pages-preview").removeClass("pagesLoaded");
-		$(".pages-preview .page").remove();
-		for(var i=1;i<(amount-1);i++){
-			if(i==2) continue;
-			$(".pages-preview").append('<div class="singlePage previewPage" id="page'+i+'"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mO82g4AAjcBXq8Qp6oAAAAASUVORK5CYII=" class="img-fluid"><div class="gradient"><svg width="120" height="30" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#40a1f1"><circle cx="15" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="60" cy="15" r="9" fill-opacity="0.3"><animate attributeName="r" from="9" to="9"begin="0s" dur="0.8s"values="9;15;9" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="0.5" to="0.5"begin="0s" dur="0.8s"values=".5;1;.5" calcMode="linear"repeatCount="indefinite" /></circle><circle cx="105" cy="15" r="15"><animate attributeName="r" from="15" to="15"begin="0s" dur="0.8s"values="15;9;15" calcMode="linear"repeatCount="indefinite" /><animate attributeName="fill-opacity" from="1" to="1"begin="0s" dur="0.8s"values="1;.5;1" calcMode="linear"repeatCount="indefinite" /></circle></svg></div></div>');
-		}
-		$(".previewPage:first").addClass("hard");
-		$(".previewPage:first").next().addClass("hard");
-		$(".previewPage:last").addClass("hard");
-		$(".previewPage:last").prev().addClass("hard");
 		
 		getNewRequest(1);
-		
-		$('#flip-pages-preview').turn({
-			duration: 1500,
-			acceleration: true,
-			autoCenter: true,
-			gradients: true,
-			turnCorners: "bl,br",
-			elevation: 300
-		});
-		
-		$(".pages-preview .opa").removeClass("opa");
-		$('.pages-preview .gradient').html("");
-		  $(".pages-preview").addClass("pagesLoaded");
 		
 	}
 	function preview_start(){
@@ -552,17 +533,11 @@
 	function resizeFrame(){
 		var w = $('#main').width();
 		if(w<=575.98){
-			$('#flip-pages-preview').turn('size', '300', '150');
-			if($('#flip-pages-top').length > 0)
-			  $('#flip-pages-top').turn('size', '300', '150');
 			if( pagesShown == 0 ){
 				$('#modal-phone-alert').modal('show');
 				pagesShown = 1;
 			}
 		}else{
-			if($('#flip-pages-top').length > 0)
-			  $('#flip-pages-top').turn('size', '', '');
-			$('#flip-pages-preview').turn('size', '', '');
 			$('#modal-phone-alert').modal('hide');   
 		}
 	}
@@ -755,8 +730,6 @@
 		}
 	
 		resetBook();
-		// $("#flip-pages-top").closest(".container-top-preview").remove();
-		$("#flip-pages-top").remove();
 		scrollToElement("#final-step", 1000);
 	  }
 	</script>
@@ -803,7 +776,7 @@
 			characters[0].name = [ nameId, characters[0].name ];
 		}
 	}
-	curB.characters = JSON.stringify(characters);
+	curB.characters = characters;
 	delOneSession("currentPreview");
 	
 	/* JS Header from customization */
@@ -813,7 +786,8 @@
 	var amountChar = thisBook.characters.length;
 	var thisCurrentBook = currentBook();
 	thisCurrentBook.storyId = currentB;
-	setcurrentBook(thisCurrentBook);
+	// setcurrentBook(thisCurrentBook);
+	setcurrentBook(curB);
 	
 	var indexOfProtagonist = 0;
 	$.each( thisBook.characters, function( index, value ){
