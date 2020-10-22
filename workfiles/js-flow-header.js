@@ -187,7 +187,7 @@
 			console.log("REQUEST CANCELED: No CODE");
 			return false;
 		}
-		if(previewToken !== token){
+		if(previewToken !== token && !sample){
 			console.log(`REQUEST CANCELED: TOKEN is OLD (${token}) current is ${previewToken}`);
 			return false;
 		}
@@ -285,6 +285,7 @@
 		dataSub.dedication = parseDedication(thisDedication);
 		if( curB.code != undefined) dataSub.code = curB.code;
 		var currentP = currentPreview();
+		var startToken = previewToken;
 		$.ajax({
 			url: "https://admin.materlu.com/api/save-preview-story?",
 			type: "POST",
@@ -295,9 +296,9 @@
 				var result = addTocurrentBook( { "code": res.code } );
 				if( start == 1 ){
 					//loadPage(1,1,0,0);
-					loadPage(previewToken, 3,3+blockPages,blockPages,0,sample);
+					loadPage(startToken, 3,3+blockPages,blockPages,0,sample);
 				}else if( start > 1 ){
-					loadPage(previewToken, start,start,blockPages,0,sample);
+					loadPage(startToken, start,start,blockPages,0,sample);
 				}
 				if( restart == 1 ){
 					setTimeout(function(){ window.location.reload(); }, 1200);
