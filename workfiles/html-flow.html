@@ -102,25 +102,20 @@
             <div class="container h5 text-teal mb-2 text-center d-none">==(MAT_check_out_this_sample)==</div>
             <div class="d-flex flex-column">
               <div class="d-flex flex-column align-items-center justify-content-center position-relative">
-                <div class="book_wrapper">
-                  <a id="next_page_button_sample" class="next_page_button"></a>
-                  <a id="prev_page_button_sample" class="prev_page_button"></a>
-                  <div id="loading_sample" class="loading">Loading pages...</div>
-                  <div id="mybook_sample" style="display:none;">
-                    <div class="b-load">
-                      <div class="hard">
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="getCovers" data-id="<<(materbooks.data.==(language)==[?].id)>>"/>
-                      </div>
+                <div id="mybook_sample">
+                    <div></div>
+                    <div class="hard">
+                      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="getCovers" data-id="<<(materbooks.data.==(language)==[?].id)>>"/>
                     </div>
                   </div>
                 </div>
               </div>
             </div> 
             <hr class="w-50 hooray-separte-bar"/>
-            <div class="book-read-instructions hooray-text-highlight">
+            <div class="book-read-instructions hooray-text-highlight text-center">
               <p>This is a mockup of the book you like.<br> Take a look and then personalize below.</p>
             </div>
-            <section class="about-book description w-50"></section>
+            <section class="about-book description text-center"></section>
             <section class="banners-container w-100 h-100">
               <a href="#" target="_blank" class="hooray-ancho-more-information">
                 <img src="https://cdn-common-west-us.azureedge.net/hoorayheroes-com/products/71/8066a478-ab7e-4537-b154-f8060cc1afe6.png"/>
@@ -842,23 +837,17 @@
                 <div id="final-step" class="hooray-final-preview">
                   <h1>Hooray!</h1>
                   <h2>The book “Diary of Harper” is ready for your shelf. <br>Click through it below.</h2>
-              
-                  <div class="d-flex flex-column align-items-center justify-content-center position-relative">
-                    <div class="book_wrapper">
-                      <a id="next_page_button_preview" class="next_page_button"></a>
-                      <a id="prev_page_button_preview" class="prev_page_button"></a>
-                      <div id="loading_preview" class="loading">Loading pages...</div>
-                      <div id="mybook_preview" style="display:none;">
-                        <div class="b-load">
-                          <div class="hard">
-                            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="getCovers" data-id="<<(materbooks.data.==(language)==[?].id)>>"/>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div> 
               </section>
+            </section>
+
+            <section class="hooray-book-preview">
+              <div id="mybook_preview">
+                <div></div>
+                <div class="hard">
+                  <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQYV2P4////fwAJ+wP9BUNFygAAAABJRU5ErkJggg==" class="getCovers" data-id="<<(materbooks.data.==(language)==[?].id)>>"/>
+                </div>
+              </div>
             </section>
 
             <section id="overview" class="hooray-book-overview">

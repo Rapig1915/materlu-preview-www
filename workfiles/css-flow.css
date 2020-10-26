@@ -2642,11 +2642,20 @@ opacity: 1;}
   opacity: 0;
 }
 
-/* CSS For Booklet plugin */
-/* @Booklet
-----------------------------------------*/
-  .booklet           {width:800px; height:600px; position:relative; /*background:#fff;*/ margin:0 auto 10px;}
-  .booklet .b-page  {left:0; top:0; position:absolute; overflow:hidden; padding:0;}
+/* CSS for Booklet Custom assets */
+/*
+ * jQuery Booklet Plugin
+ * Copyright (c) 2010 - 2014 William Grauvogel (http://builtbywill.com/)
+ *
+ * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
+ *
+ * Version : 1.4.4
+ *
+ * Originally based on the work of:
+ *  1) Charles Mangin (http://clickheredammit.com/pageflip/)
+ */
+  .booklet         {width:800px; height:600px; position:relative; margin:0 auto 10px; overflow:visible !important;}
+  .booklet .b-page {left:0; top:0; position:absolute; overflow:hidden; padding:0; outline:1px solid rgba(0,0,0,0);}
   
   .booklet .b-pN  {}
   .booklet .b-p0  {}
@@ -2654,9 +2663,7 @@ opacity: 1;}
   .booklet .b-p2  {}    
   .booklet .b-p3  {}
   .booklet .b-p4  {}
-  
-  /*.booklet .b-load  {display:none;}*/
-   
+     
     /* Page Wrappers */
   .booklet .b-wrap       {top:0; position:absolute;}
   .booklet .b-wrap-left  {background:#fff;}
@@ -2672,7 +2679,7 @@ opacity: 1;}
     /* Custom Page Types */
   .booklet .b-page-blank  {padding:0; width:100%; height:100%;}
   .booklet .b-page-cover  {padding:0; width:100%; height:100%; background:#925C0E;}
-  .booklet .b-page-cover h3  {color:#fff; text-shadow:0px 1px 3px #222;}
+  .booklet .b-page-cover h3  {color:#fff; text-shadow:0 1px 3px #222;}
    
     /* Page Numbers */
   .booklet .b-counter {bottom:10px; position:absolute; display:block; width:25px; height:20px; background:#ccc; color:#444; text-align:center; font-family:Georgia, "Times New Roman", Times, serif; font-size:10px; padding:5px 0 0;}
@@ -2685,6 +2692,10 @@ opacity: 1;}
   
   .booklet .b-p0 {background-image:url("images/shadow.png"); background-repeat:repeat-y; background-position:100% 10px;}
   .booklet .b-p3 {background-image:url("images/shadow.png"); background-repeat:repeat-y; background-position:0 10px;}
+  
+    /* Overlay Controls */
+  .booklet .b-grab     {cursor: url("images/openhand.cur"), default;}
+  .booklet .b-grabbing {cursor: url("images/closedhand.cur"), default;}
   
     /* Overlay Controls */
   .booklet .b-overlay      {top:0; position:absolute; height:100%; width:50%;}
@@ -2707,15 +2718,16 @@ opacity: 1;}
     
 /* @z-index fix (needed for older IE browsers)
 ----------------------------------------*/
-  body              {z-index:0;}
+
+    body              {z-index:0;}
     .b-menu           {z-index:100;}
     .b-selector       {z-index:100;}
-  .booklet          {z-index:10;}
+    .booklet          {z-index:10;}
     .b-pN             {z-index:10;}
-    .b-p0             {z-index:10;}
-    .b-p1             {z-index:10;}
-    .b-p2             {z-index:10;}
-    .b-p3             {z-index:10;}
+    .b-p0             {z-index:30;}
+    .b-p1             {z-index:20;}
+    .b-p2             {z-index:20;}
+    .b-p3             {z-index:30;}
     .b-p4             {z-index:10;}
     .b-prev           {z-index:40;}
     .b-next           {z-index:40;}
@@ -2725,101 +2737,23 @@ opacity: 1;}
 ----------------------------------------*/
   .b-menu {height:40px; padding:0 0 10px;}
   
-  .b-selector             {height:40px; position:relative; float:right; border:none; color:#cecece; cursor:pointer;}
+  .b-selector             {height:40px; position:relative; float:right; border:none; color:#cecece; cursor:pointer; font:normal 12px "Myriad Pro", Myriad, "DejaVu Sans Condensed","Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;}
   .b-selector .b-current  {padding:8px 15px 12px; line-height:20px; min-width:18px; height:20px; display:block; background:#000; text-align:center;}
   .b-selector-page        {width:auto; margin-left:15px;}
   .b-selector-chapter     {width:auto;}
   
-  .b-selector:hover            {color:#fff; background-position:left 0px;}
-  .b-selector:hover .b-current {background-position:right 0px;}
-  .b-selector ul               {overflow:hidden; margin:0; list-style:none !important; position:absolute; top:40px; right:0; padding:0 0 10px; background:#000; width:240px; font:normal 12px "Myriad Pro", Myriad, "DejaVu Sans Condensed","Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;}
+  .b-selector:hover            {color:#fff; background-position:left 0;}
+  .b-selector:hover .b-current {background-position:right 0;}
+  .b-selector ul               {overflow:hidden; margin:0; list-style:none !important; position:absolute; top:40px; right:0; padding:0 0 10px; background:#000; width:240px;}
   .b-selector li               {border:none;}
   .b-selector a                {color:#cecece; height:14px; text-decoration:none; display:block; padding:5px 10px;}
   .b-selector a .b-text        {float:left; clear:none;}
   .b-selector a .b-num         {float:right; clear:none;}
   .b-selector a:hover          {color:#fff;}
+    
 
-
-/* CSS for Booklet Custom assets */
-/* Booklet jQuery Plugin Style*/
-.booklet{
-  -moz-box-shadow:0px 0px 1px #fff;
-  -webkit-box-shadow:0px 0px 1px #fff;
-  box-shadow:0px 0px 1px #fff;
-  -moz-border-radius:10px;
-  -webkit-border-radius:10px;
-  border-radius:10px;
-}
-.booklet .b-counter {
-  bottom:10px;
-  position:absolute;
-  display:none;
-  width:90%;
-  height:20px;
-  border-top:1px solid #ddd;
-  color:#222;
-  text-align:center;
-  font-size:12px;
-  padding:5px 0 0;
-  background:transparent;
-  -moz-box-shadow:0px -1px 1px #fff;
-  -webkit-box-shadow:0px -1px 1px #fff;
-  box-shadow:0px -1px 1px #fff;
-  opacity:0.8;
-}
-.book_wrapper{
-  margin:0 auto;
-  width:1105px;
-  height:550px;
-  position:relative;
-}
-
-.book_wrapper img{
+.booklet img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  padding: 0px;
-  margin: 0px;
-}
-.book_wrapper .next_page_button,
-.book_wrapper .prev_page_button{
-  display:none;
-  position:absolute;
-  width:41px;
-  height:40px;
-  cursor:pointer;
-  margin-top:-20px;
-  top:50%;
-  background:transparent url("data:image/png;base64,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") no-repeat 0px -40px;
-}
-.book_wrapper .prev_page_button{
-  left:-30px;
-}
-.book_wrapper .next_page_button{
-  right:-30px;
-  background-position:-41px -40px;
-}
-.book_wrapper .next_page_button:hover{
-  background-position:-41px 0px;
-}
-.book_wrapper .prev_page_button:hover{
-  background-position:0px 0px;
-}
-.book_wrapper .loading{
-  width:260px;
-  height:56px;
-  position: absolute;
-  top:50%;
-  margin-top:-28px;
-  right: calc(50% - 130px);
-  line-height:56px;
-  color:#000;
-  padding-left:60px;
-  font-size:15px;
-  opacity: 0.7;
-  z-index:9999;
-  -moz-border-radius:20px;
-  -webkit-border-radius:20px;
-  border-radius:20px;
-  filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+  object-fit: contain;
 }
